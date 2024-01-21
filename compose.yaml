@@ -21,7 +21,7 @@ services:
     networks:
       - banter-network
     ports:
-      - 8080:80
+      - 8080:80 # for dev only
     build:
       context: ./hub
 
