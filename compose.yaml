@@ -1,35 +1,33 @@
 services:
 
-	npm:
-		image: jc21/nginx-proxy-manager:latest
-		container_name: npm
-		restart: unless-stopped
-		volumes:
-			- npm-data:/data
-			- npm-letsencrypt:/etc/letsencrypt
-		networks:
-			- banter-network
-		ports:
-			- 80:80
-			- 81:81
-			- 443:443
+    npm:
+        image: jc21/nginx-proxy-manager:latest
+        container_name: npm
+        restart: unless-stopped
+        volumes:
+            - npm-data:/data
+            - npm-letsencrypt:/etc/letsencrypt
+        networks:
+            - banter-network
+        ports:
+            - 80:80
+            - 81:81
+            - 443:443
 
-	hub:
-		image: arteeh/banter-hub:dev
-		container_name: hub
-		restart: unless-stopped
-		networks:
-			- banter-network
-		ports:
-			- 80:80
-		build:
-			context: ./hub
+    hub:
+        image: arteeh/banter-hub:dev
+        container_name: hub
+        restart: unless-stopped
+        networks:
+            - banter-network
+        build:
+            context: ./hub
 
 volumes:
 
-	npm-data:
-	npm-letsencrypt:
+    npm-data:
+    npm-letsencrypt:
 
 networks:
 
-	banter-network:
+    banter-network:
