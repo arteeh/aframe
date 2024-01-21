@@ -22,9 +22,6 @@ You should open this site in Banter.
 	{
 		var t = new PeriodicTimer(TimeSpan.FromMicroseconds(1000000/90));
 
-		DateTime pre = DateTime.Now;
-		DateTime cur = DateTime.Now;
-
 		while(await t.WaitForNextTickAsync())
 		{
 			if(2 < boxPosX) direction = false;
@@ -32,11 +29,6 @@ You should open this site in Banter.
 
 			if(direction) boxPosX += 0.01;
 			else boxPosX -= 0.01;
-
-			cur = DateTime.Now;
-			TimeSpan ts = cur - pre;
-			Console.WriteLine($"ts={1000000 / ts.Microseconds} boxPosX={boxPosX}");
-			pre = DateTime.Now;
 
 			StateHasChanged();
 		}
