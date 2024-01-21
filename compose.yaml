@@ -15,13 +15,11 @@ services:
       - 443:443
 
   hub:
-    image: arteeh/banter-hub:dev
+    image: arteeh/banter-hub
     container_name: hub
     restart: unless-stopped
     networks:
       - banter-network
-    ports:
-      - 8080:80 # for dev only
     build:
       context: ./hub
 
