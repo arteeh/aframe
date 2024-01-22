@@ -1,28 +1,21 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
-	<base href="/" />
+    <base href="/" />
+
 	<meta property="og:title" content="Arteeh's Hub">
 	<meta property="og:description" content="My playground for VR stuff">
 	<meta property="og:image" content="https://user-images.githubusercontent.com/6830845/204246466-48b53d22-9372-486d-ae69-4162a9511251.png">
 	<meta name="sidequest-space-verification" content="821222d9-e690-405f-8ae0-d08d9a04cd2e">
 	<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+
+    <HeadOutlet />
 </head>
 
 <body>
-
-	<a-scene>
-
-		<!-- A big box for the floor with a collider on it -->
-		<a-box sq-collider color="darkgreen" scale="30 0.1 30"></a-box>
-
-		<div id="app"></div>
-
-	</a-scene>
-	
-	<script src="_framework/blazor.webassembly.js"></script>
-
+    <Routes />
+    <script src="_framework/blazor.web.js"></script>
 </body>
 
 </html>

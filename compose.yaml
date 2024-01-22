@@ -23,6 +23,15 @@ services:
     build:
       context: ./hub
 
+  # hub:
+  #   image: arteeh/banter-hub
+  #   container_name: banter
+  #   restart: unless-stopped
+  #   networks:
+  #     - banter-network
+  #   build:
+  #     context: ./banter
+
 volumes:
 
   npm-data:
