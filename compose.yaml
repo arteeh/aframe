@@ -14,14 +14,14 @@ services:
       - 81:81
       - 443:443
 
-  hub:
+  banter:
     image: arteeh/banter-hub
-    container_name: hub
+    container_name: banter
     restart: unless-stopped
     networks:
       - banter-network
     build:
-      context: ./hub
+      context: ./banter
 
   # hub:
   #   image: arteeh/banter-hub
