@@ -1,4 +1,4 @@
-﻿namespace BanterCommon;
+﻿namespace Common;
 
 public static class ComponentParameters
 {

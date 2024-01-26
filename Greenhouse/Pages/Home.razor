@@ -1,13 +1,14 @@
 ﻿@page "/"
 
-@using BanterCommon.Components
+@using Common
+@using Common.Components
 
 @* <ASky Color="#040020"></ASky> *@
 <a-entity environment="preset: starry; ground: none;"></a-entity>
 
 @foreach (ComponentBase e in entities.Values)
 {
-	<DynamicComponent Type="@e.GetType()" Parameters="@BanterCommon.ComponentParameters.Get(e)" />
+	<DynamicComponent Type="@e.GetType()" Parameters="@ComponentParameters.Get(e)" />
 }
 
 @code {
