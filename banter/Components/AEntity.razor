@@ -1,0 +1,36 @@
+﻿@code {
+
+	[Parameter]
+	public double PosX { get; set; } = 0;
+
+	[Parameter]
+	public double PosY { get; set; } = 0;
+
+	[Parameter]
+	public double PosZ { get; set; } = 0;
+
+	[Parameter]
+	public double RotX { get; set; } = 0;
+
+	[Parameter]
+	public double RotY { get; set; } = 0;
+
+	[Parameter]
+	public double RotZ { get; set; } = 0;
+
+	protected string Pos { get { return $"{PosX} {PosY} {PosZ}"; } }
+	protected string Rot { get { return $"{RotX} {RotY} {RotZ}"; } }
+
+	public AEntity() {}
+
+	public AEntity(double posX, double posY, double posZ, double rotX, double rotY, double rotZ)
+	{
+		PosX = posX;
+		PosY = posY;
+		PosZ = posZ;
+		RotX = rotX;
+		RotY = rotY;
+		RotZ = rotZ;
+	}
+
+}
