@@ -1,0 +1,29 @@
+﻿@inherits AEntity
+
+@if(Collider)
+{
+	<a-entity sq-nonconvexcollider="recursive: true" gltf-model="@GLTFHref" position="@Pos" rotation="@Rot" scale="@Scl"></a-entity>
+}
+else
+{
+	<a-entity gltf-model="@GLTFHref" position="@Pos" rotation="@Rot" scale="@Scl"></a-entity>
+}
+
+@code {
+
+	[Parameter]
+	public string GLTFHref { get; set; } = "";
+
+	[Parameter]
+	public bool Collider { get; set; } = true;
+
+	public AModel() {}
+
+	public AModel(string gltfHref, bool collider,
+		double posX, double posY, double posZ, double rotX, double rotY, double rotZ, double sclX, double sclY, double sclZ) : base(posX,posY,posZ,rotX,rotY,rotZ,sclX,sclY,sclZ)
+	{
+		GLTFHref = gltfHref;
+		Collider = collider;
+	}
+
+}

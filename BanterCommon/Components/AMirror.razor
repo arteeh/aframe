@@ -1,0 +1,15 @@
+﻿@inherits AEntity
+
+<a-entity sq-mirror position="@Pos" rotation="@Rot" scale="@Scl"></a-entity>
+
+@code {
+
+	public AMirror() {}
+
+	public AMirror(
+		double posX, double posY, double posZ, double rotX, double rotY, double rotZ, double sclX, double sclY, double sclZ) : base(posX,posY,posZ,rotX,rotY,rotZ,sclX,sclY,sclZ)
+	{
+
+	}
+
+}

@@ -1,0 +1,15 @@
+<a-sky color="@Color"></a-sky>
+
+@code {
+
+	[Parameter]
+	public string Color { get; set; } = "#040020";
+
+	public ASky() {}
+
+	public ASky(string color)
+	{
+		Color = color;
+	}
+
+}

@@ -1,0 +1,18 @@
+﻿@inherits AEntity
+
+<a-box sq-collider color="@Color" position="@Pos" rotation="@Rot" scale="@Scl"></a-box>
+
+@code {
+
+	[Parameter]
+	public string Color { get; set; } = "#FF00FF";
+
+	public ABox() {}
+
+	public ABox(string color,
+		double posX, double posY, double posZ, double rotX, double rotY, double rotZ, double sclX, double sclY, double sclZ) : base(posX,posY,posZ,rotX,rotY,rotZ,sclX,sclY,sclZ)
+	{
+		Color = color;
+	}
+
+}

@@ -1,0 +1,58 @@
+﻿@page "/"
+
+@using BanterCommon.Components
+
+@* <ASky Color="#040020"></ASky> *@
+<a-entity environment="preset: starry; ground: none;"></a-entity>
+
+@foreach (ComponentBase e in entities.Values)
+{
+	<DynamicComponent Type="@e.GetType()" Parameters="@BanterCommon.ComponentParameters.Get(e)" />
+}
+
+@code {
+
+	private Dictionary<string, ComponentBase> entities = new();
+
+	private const double scale = 1.0;
+
+	protected override async Task OnParametersSetAsync()
+	{
+		Console.WriteLine("OnParametersSetAsync");
+		await base.OnParametersSetAsync();
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		Console.WriteLine("OnInitializedAsync");
+		await base.OnInitializedAsync();
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		Console.WriteLine($"OnAfterRenderAsync({firstRender})");
+
+		if(firstRender)
+		{
+			//entities.Add("entities/b1", new ABox("red",0,0,0,0,0,0,1,1,1));
+			//entities.Add("entities/b2", new ABox("green",2,2,2,0,0,0,1,1,1));
+			//entities.Add("entities/b3", new ABox("blue",4,4,4,0,0,0,1,1,1));
+			//entities.Add("entities/b4", new ABox("orange",6,6,6,0,0,0,1,1,1));
+			//entities.Add("entities/b5", new ABox("yellow",8,8,8,0,0,0,1,1,1));
+			
+			entities.Add("entities/floor", new ABox("black",0,-1,0,0,0,0,30,0.1,30));
+			entities.Add("entities/collider", new AModel("models/collider.gltf",true,0,0,0,0,0,0,scale,scale,scale));
+			entities.Add("entities/cube", new AModel("models/cube.gltf",false,0,0,0,0,0,0,scale,scale,scale));
+			entities.Add("entities/circle", new AModel("models/circle.gltf",false,0,0,0,0,0,0,scale,scale,scale));
+			entities.Add("entities/leaves", new AModel("models/leaves.gltf",false,0,0,0,0,0,0,scale,scale,scale));
+			entities.Add("entities/bench", new AModel("models/bench.gltf",true,0,0,0,0,0,0,scale,scale,scale));
+			entities.Add("entities/ghost", new AModel("models/ghost.gltf",false,0,0,0,0,0,0,scale,scale,scale));
+
+			// little sign with:
+			// "Stylized Mangrove Greenhouse by Andrey Bársh"
+			// "VR port by arteeh"
+			StateHasChanged();
+		}
+	}
+
+}	

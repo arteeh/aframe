@@ -69,18 +69,18 @@
 @code {
 
 	bool direction = true;
-	private Dictionary<string,AEntity> entities;
+	private Dictionary<string,AEntity> entities = new();
+
+	protected override async Task OnParametersSetAsync()
+	{
+		Console.WriteLine("OnParametersSetAsync");
+		await base.OnParametersSetAsync();
+	}
 
 	protected override async Task OnInitializedAsync()
 	{
-		Console.WriteLine($"OnInitializedAsync");
-
-		// order based on distance from spawn
-		entities = new()
-		{
-			new AMirror(0,1,10,0,180,0),
-			//new ALink("portal", "Community Hub", "https://sq-community-hub.glitch.me", "https://logo.clearbit.com/sidequestvr.com", 5, 0, 8, 0, 45, 0),
-		};
+		Console.WriteLine("OnInitializedAsync");
+		await base.OnInitializedAsync();
 	}
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -89,21 +89,34 @@
 
 		if(firstRender)
 		{
-			ABox abox = new ABox("#4CC3D9",0,0.5,-3,0,45,0);
-		
-			entities.Add("entities/abox1", abox);
+			entities.Add("entities/mirror1", new AMirror(-2,1,10,0,180,0,4,4,4));
+			entities.Add("entities/abox1", new ABox("#4CC3D9",0,0.5,-3,0,45,0,1,1,1));
+			entities.Add("entities/greenhouse1", new AModel("greenhouse/scene.gltf",20,3,10,0,0,0,1,1,1));
+			StateHasChanged();
 
-			var t = new PeriodicTimer(TimeSpan.FromMicroseconds(1000000 / 30));
+			GameLoop();
 		}
+	}
 
-		ABox a = entities.GetValue("entities/abox1");
+	private async Task GameLoop()
+	{
+		PeriodicTimer t = new(TimeSpan.FromMicroseconds(1000000 / 2));
 
-		if (2 < a.PosX) direction = false;
-		else if (a.PosX < 0) direction = true;
+		while (await t.WaitForNextTickAsync())
+		{
+			AEntity? a;
+			if(entities.TryGetValue("entities/abox1", out a))
+			{
+				ABox ab = (ABox) a;
 
-		if (direction) a.PosX += 0.01;
-		else a.PosX -= 0.01;
+				if (2 < a.PosX) direction = false;
+				else if (a.PosX < 0) direction = true;
 
-		StateHasChanged();
+				if (direction) a.PosX += 0.01;
+				else a.PosX -= 0.01;
+
+				StateHasChanged();
+			}
+		}
 	}
 }
