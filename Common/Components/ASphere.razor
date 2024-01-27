@@ -1,0 +1,22 @@
+﻿@inherits AEntity
+
+<a-entity sq-collider geometry="primitive: sphere" material="color: @Color; opacity: @Opacity;" position="@Pos" rotation="@Rot" scale="@Scl" />
+
+@code {
+
+	[Parameter]
+	public string? Color { get; set; } = null;
+
+	[Parameter]
+	public double Opacity { get; set; } = 1.0;
+
+	public ASphere() {}
+
+	public ASphere(string? color = null, double opacity = 1.0,
+		double posX = 0, double posY = 0, double posZ = 0, double rotX = 0, double rotY = 0, double rotZ = 0, double sclX = 1, double sclY = 1, double sclZ = 1) : base(posX,posY,posZ,rotX,rotY,rotZ,sclX,sclY,sclZ)
+	{
+		Color = color;
+		Opacity = opacity;
+	}
+
+}

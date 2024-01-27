@@ -3,64 +3,77 @@
 @using Common
 @using Common.Components
 
-<a-sky color="#040020"></a-sky>
-@* <ASky Color="#040020"></ASky> *@
+@* <a-sky color="#070C2B"></a-sky> *@
+@* <ASky Image="Assets/textures/gaia.png" Color="#070C2B" /> *@
 @* <a-entity environment="preset: starry; ground: none;"></a-entity> *@
 
 @foreach (ComponentBase e in entities.Values)
 {
-	Dictionary<string, object> paramz = ComponentParameters.Get(e);	
-	//paramz.Add("OnModelLoadedCallback", EventCallback.Factory.Create<string>(this, OnModelLoadedCallback));
-	<DynamicComponent Type="@e.GetType()" Parameters="@paramz" />
+	<DynamicComponent Type="@e.GetType()" Parameters="ComponentParameters.Get(e)" />
 }
 
 @code {
 
 	private Dictionary<string, ComponentBase> entities = new();
 	private Queue<(string, ComponentBase)> entityLoadQueue = new();
+	private EventCallback<string> ec;	
+
+	protected override async Task OnInitializedAsync()
+	{
+		Console.WriteLine("OnInitializedAsync");
+		
+		ec = EventCallback.Factory.Create<string>(this, OnModelLoadedCallback);
+
+		// Invisible floor and wall colliders to prevent falling out of the world
+		// mayb just put these at the start (for preload?)
+		entities.Add("entities/earthcollider",	new AModel("entities/earthcollider",		"Assets/EarthCollider.gltf",		ec,			CollisionType.ConvexRecursive));
+		entities.Add("entities/invfloor",		new ABox(color:"red",		opacity:0.01,	posX:1,		posY:-1,	posZ:0,		sclX:20,	sclY:0, sclZ:24));
+		entities.Add("entities/invwallwest",	new ABox(color:"green",		opacity:0.01,	posX:11,	posY:2,		posZ:0,		sclX:0,		sclY:6, sclZ:24));
+		entities.Add("entities/invwallnorth",	new ABox(color:"blue",		opacity:0.01,	posX:1,		posY:2,		posZ:12,	sclX:20,	sclY:6, sclZ:0));
+		entities.Add("entities/invwallsouth",	new ABox(color:"yellow",	opacity:0.01,	posX:1,		posY:2,		posZ:-12,	sclX:20,	sclY:6, sclZ:0));
+		entities.Add("entities/invwalleast",	new ABox(color:"pink",		opacity:0.01,	posX:-9,	posY:2,		posZ:0,		sclX:0,		sclY:6, sclZ:24));
+
+		await base.OnInitializedAsync();
+	}
+
 	protected override async Task OnParametersSetAsync()
 	{
 		Console.WriteLine("OnParametersSetAsync");
 		await base.OnParametersSetAsync();
 	}
 
-	protected override async Task OnInitializedAsync()
-	{
-		Console.WriteLine("OnInitializedAsync");
-		
-		entities.Add("entities/tempfloor", new ABox(color: null, posX: 1, posY: 0.25, sclX: 21, sclY: 0, sclZ: 25));
-
-		EventCallback<string> ec = EventCallback.Factory.Create<string>(this, OnModelLoadedCallback);
-
-		entityLoadQueue.Enqueue(("entities/earth", new AModel("entities/earth", "Assets/Earth.gltf", ec, CollisionType.ConvexRecursive)));
-		entityLoadQueue.Enqueue(("entities/ccollideonly", new AModel("entities/ccollideonly", "Assets/CCollideOnly.gltf", ec, CollisionType.NonconvexRecursive)));
-		entityLoadQueue.Enqueue(("entities/cpebbles", new AModel("entities/cpebbles", "Assets/CPebbles.gltf", ec))); // maybe no collision
-		entityLoadQueue.Enqueue(("entities/cleaves", new AModel("entities/cleaves", "Assets/CLeaves.gltf", ec, CollisionType.None)));
-		entityLoadQueue.Enqueue(("entities/door", new AModel("entities/door", "Assets/Door.gltf", ec, CollisionType.None)));
-		entityLoadQueue.Enqueue(("entities/cphysical", new AModel("entities/cphysical", "Assets/CPhysical.gltf", ec)));
-		entityLoadQueue.Enqueue(("entities/bench", new AModel("entities/bench", "Assets/Bench.gltf", ec)));
-		entityLoadQueue.Enqueue(("entities/chair", new AModel("entities/chair", "Assets/Chair.gltf", ec)));
-		entityLoadQueue.Enqueue(("entities/containerfloating", new AModel("entities/containerfloating", "Assets/ContainerFloating.gltf", ec)));
-		entityLoadQueue.Enqueue(("entities/lily00", new AModel("entities/lily00", "Assets/Lily00.gltf", ec)));
-		entityLoadQueue.Enqueue(("entities/lily01", new AModel("entities/lily01", "Assets/Lily01.gltf", ec)));
-
-		await base.OnInitializedAsync();
-	}
-
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
+		Console.WriteLine($"OnAfterRenderAsync({firstRender})");
+
+		if(firstRender)
+		{
+			entityLoadQueue.Enqueue(("entities/earth",			new AModel("entities/earth",		"Assets/Earth.gltf",		ec, CollisionType.None)));
+			entityLoadQueue.Enqueue(("entities/ccollideonly",	new AModel("entities/ccollideonly",	"Assets/CCollideOnly.gltf",	ec, CollisionType.NonconvexRecursive)));
+			entityLoadQueue.Enqueue(("entities/cpebbles",		new AModel("entities/cpebbles",		"Assets/CPebbles.gltf",		ec))); // maybe no collision
+			entityLoadQueue.Enqueue(("entities/cleaves",		new AModel("entities/cleaves",		"Assets/CLeaves.gltf",		ec, CollisionType.None)));
+			entityLoadQueue.Enqueue(("entities/door",			new AModel("entities/door",			"Assets/Door.gltf",			ec, CollisionType.None)));
+			entityLoadQueue.Enqueue(("entities/cphysical",		new AModel("entities/cphysical",	"Assets/CPhysical.gltf",	ec)));
+			entityLoadQueue.Enqueue(("entities/bench",			new AModel("entities/bench",		"Assets/Bench.gltf",		ec)));
+			entityLoadQueue.Enqueue(("entities/chair",			new AModel("entities/chair",		"Assets/Chair.gltf",		ec)));
+			entityLoadQueue.Enqueue(("entities/containerfloating",new AModel("entities/containerfloating","Assets/ContainerFloating.gltf",ec)));
+			entityLoadQueue.Enqueue(("entities/lily00",			new AModel("entities/lily00",		"Assets/Lily00.gltf",		ec)));
+			entityLoadQueue.Enqueue(("entities/lily01",			new AModel("entities/lily01",		"Assets/Lily01.gltf",		ec)));
+			entityLoadQueue.Enqueue(("entities/sign",			new AModel("entities/sign",			"Assets/Sign.gltf",			ec, CollisionType.ConvexRecursive)));
+			entityLoadQueue.Enqueue(("entities/signimage",		new AImage("Assets/textures/signimagebg.png", width:2, height:1, posX:9.09, posY:1.1, posZ:6.21, rotX:-10, rotY:219, rotZ:5, sclX:0.57, sclY:0.5)));
+			entityLoadQueue.Enqueue(("entities/sky",			new ASky(color: "#070C2B")));
+
+			OnModelLoadedCallback("... nothing yet");
+		}
+
 		(string topic,ComponentBase component) toDequeue;
 		if(entityLoadQueue.TryDequeue(out toDequeue))
 		{
-			//await Task.Delay(2000); // replace with "wait until done loading previous model"
+			//Task.Delay(200); // replace with "wait until done loading previous model"
 			Console.WriteLine($"Adding {toDequeue.topic}");
 			entities.Add(toDequeue.topic,toDequeue.component);
 			StateHasChanged();
 		}
-		
-		// TODO: little sign with:
-		// "Stylized Mangrove Greenhouse by Andrey Bársh"
-		// "VR port by arteeh"
 	}
 
 	private void OnModelLoadedCallback(string topic)

@@ -1,14 +1,28 @@
-<a-sky color="@Color"></a-sky>
+@if(Image != null)
+{
+	<a-sky src="@Image" color="@Color" />
+}
+else
+{
+	<a-sky color="@Color" />
+}
+
 
 @code {
 
 	[Parameter]
-	public string Color { get; set; } = "#040020";
+	public string? Image { get; set; } = null;
+
+	[Parameter]
+	public string? Color { get; set; } = "#000000";
+
+
 
 	public ASky() {}
 
-	public ASky(string color)
+	public ASky(string? image = null, string? color = "#000000")
 	{
+		Image = image;
 		Color = color;
 	}
 

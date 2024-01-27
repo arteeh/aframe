@@ -1,0 +1,25 @@
+﻿@inherits AEntity
+
+<a-image src="@ImagePath" width="@Width" height="@Height" position="@Pos" rotation="@Rot" scale="@Scl" />
+
+@code {
+
+	[Parameter]
+	public string ImagePath { get; set; } = "";
+
+	[Parameter]
+	public double Width { get; set; } = 1;
+
+	[Parameter]
+	public double Height { get; set; } = 1;
+
+	public AImage() {}
+
+	public AImage(string imagePath, double width, double height,
+		double posX = 0, double posY = 0, double posZ = 0, double rotX = 0, double rotY = 0, double rotZ = 0, double sclX = 1, double sclY = 1, double sclZ = 1) : base(posX,posY,posZ,rotX,rotY,rotZ,sclX,sclY,sclZ)
+	{
+		ImagePath = imagePath;
+		Width = width;
+		Height = height;
+	}
+}
