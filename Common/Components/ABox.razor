@@ -1,15 +1,22 @@
 ﻿@inherits AEntity
 
-<a-box sq-collider color="@Color" position="@Pos" rotation="@Rot" scale="@Scl"></a-box>
+@if(Color != null)
+{
+	<a-box sq-boxcollider color="@Color" position="@Pos" rotation="@Rot" scale="@Scl"></a-box>
+}
+else
+{
+	<a-entity sq-boxcollider geometry="primitive: box" material="color: red; opacity: 0.0;" position="@Pos" rotation="@Rot" scale="@Scl" />
+}
 
 @code {
 
 	[Parameter]
-	public string Color { get; set; } = "#FF00FF";
+	public string? Color { get; set; } = null;
 
 	public ABox() {}
 
-	public ABox(string color,
+	public ABox(string? color = null,
 		double posX = 0, double posY = 0, double posZ = 0, double rotX = 0, double rotY = 0, double rotZ = 0, double sclX = 1, double sclY = 1, double sclZ = 1) : base(posX,posY,posZ,rotX,rotY,rotZ,sclX,sclY,sclZ)
 	{
 		Color = color;

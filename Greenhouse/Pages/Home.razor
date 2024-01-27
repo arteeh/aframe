@@ -3,21 +3,16 @@
 @using Common
 @using Common.Components
 
-<AModel GLTFHref="Assets/Earth.gltf" CollisionType=CollisionType.ConvexRecursive />
-
+<a-sky color="#040020"></a-sky>
 @* <ASky Color="#040020"></ASky> *@
-<a-entity environment="preset: starry; ground: none;"></a-entity>
+@* <a-entity environment="preset: starry; ground: none;"></a-entity> *@
 
 @foreach (ComponentBase e in entities.Values)
 {
-	<DynamicComponent Type="@e.GetType()" Parameters="@ComponentParameters.Get(e)" />
+	Dictionary<string, object> paramz = ComponentParameters.Get(e);	
+	//paramz.Add("OnModelLoadedCallback", EventCallback.Factory.Create<string>(this, OnModelLoadedCallback));
+	<DynamicComponent Type="@e.GetType()" Parameters="@paramz" />
 }
-
-@* <script>
-	window.loadDoneCallback = () => {
-    	DotNet.invokeMethodAsync('Greenhouse','OnLoadDoneCallback');
-	}
-</script> *@
 
 @code {
 
@@ -32,29 +27,33 @@
 	protected override async Task OnInitializedAsync()
 	{
 		Console.WriteLine("OnInitializedAsync");
+		
+		entities.Add("entities/tempfloor", new ABox(color: null, posX: 1, posY: 0.25, sclX: 21, sclY: 0, sclZ: 25));
 
-		entityLoadQueue.Enqueue(("entities/ccollideonly", new AModel("Assets/CCollideOnly.gltf", CollisionType.NonconvexRecursive)));
-		entityLoadQueue.Enqueue(("entities/cpebbles", new AModel("Assets/CPebbles.gltf"))); // maybe no collision
-		entityLoadQueue.Enqueue(("entities/cleaves", new AModel("Assets/CLeaves.gltf", CollisionType.None)));
-		entityLoadQueue.Enqueue(("entities/door", new AModel("Assets/Door.gltf", CollisionType.None)));
-		entityLoadQueue.Enqueue(("entities/cphysical", new AModel("Assets/CPhysical.gltf")));
-		entityLoadQueue.Enqueue(("entities/bench", new AModel("Assets/Bench.gltf")));
-		entityLoadQueue.Enqueue(("entities/chair", new AModel("Assets/Chair.gltf")));
-		entityLoadQueue.Enqueue(("entities/containerfloating", new AModel("Assets/ContainerFloating.gltf")));
-		entityLoadQueue.Enqueue(("entities/lily00", new AModel("Assets/Lily00.gltf")));
-		entityLoadQueue.Enqueue(("entities/lily01", new AModel("Assets/Lily01.gltf")));
+		EventCallback<string> ec = EventCallback.Factory.Create<string>(this, OnModelLoadedCallback);
+
+		entityLoadQueue.Enqueue(("entities/earth", new AModel("entities/earth", "Assets/Earth.gltf", ec, CollisionType.ConvexRecursive)));
+		entityLoadQueue.Enqueue(("entities/ccollideonly", new AModel("entities/ccollideonly", "Assets/CCollideOnly.gltf", ec, CollisionType.NonconvexRecursive)));
+		entityLoadQueue.Enqueue(("entities/cpebbles", new AModel("entities/cpebbles", "Assets/CPebbles.gltf", ec))); // maybe no collision
+		entityLoadQueue.Enqueue(("entities/cleaves", new AModel("entities/cleaves", "Assets/CLeaves.gltf", ec, CollisionType.None)));
+		entityLoadQueue.Enqueue(("entities/door", new AModel("entities/door", "Assets/Door.gltf", ec, CollisionType.None)));
+		entityLoadQueue.Enqueue(("entities/cphysical", new AModel("entities/cphysical", "Assets/CPhysical.gltf", ec)));
+		entityLoadQueue.Enqueue(("entities/bench", new AModel("entities/bench", "Assets/Bench.gltf", ec)));
+		entityLoadQueue.Enqueue(("entities/chair", new AModel("entities/chair", "Assets/Chair.gltf", ec)));
+		entityLoadQueue.Enqueue(("entities/containerfloating", new AModel("entities/containerfloating", "Assets/ContainerFloating.gltf", ec)));
+		entityLoadQueue.Enqueue(("entities/lily00", new AModel("entities/lily00", "Assets/Lily00.gltf", ec)));
+		entityLoadQueue.Enqueue(("entities/lily01", new AModel("entities/lily01", "Assets/Lily01.gltf", ec)));
 
 		await base.OnInitializedAsync();
 	}
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		Console.WriteLine($"OnAfterRenderAsync({firstRender})");
-
 		(string topic,ComponentBase component) toDequeue;
 		if(entityLoadQueue.TryDequeue(out toDequeue))
 		{
 			//await Task.Delay(2000); // replace with "wait until done loading previous model"
+			Console.WriteLine($"Adding {toDequeue.topic}");
 			entities.Add(toDequeue.topic,toDequeue.component);
 			StateHasChanged();
 		}
@@ -64,11 +63,9 @@
 		// "VR port by arteeh"
 	}
 
-	[JSInvokable("OnLoadDoneCallback")]
-	public static Task OnLoadDoneCallback()
+	private void OnModelLoadedCallback(string topic)
 	{
-		Console.WriteLine($"OnLoadDoneCallback");
-		return Task.CompletedTask;
+		Console.WriteLine($"Loaded {topic}");
 	}
 
 }	
