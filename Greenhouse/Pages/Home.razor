@@ -14,9 +14,8 @@
 @code {
 
 	private Dictionary<string, ComponentBase> entities = new();
-
-	private const double scale = 1.0;
-
+	private uint loadWave = 0;
+	private bool loadFinished = false;
 	protected override async Task OnParametersSetAsync()
 	{
 		Console.WriteLine("OnParametersSetAsync");
@@ -26,34 +25,58 @@
 	protected override async Task OnInitializedAsync()
 	{
 		Console.WriteLine("OnInitializedAsync");
+
+		entities.Add("entities/floor", new ABox("black", posY:-1, sclX:40, sclY:0.1, sclZ:40));
+		entities.Add("entities/earth", new AModel("Assets/Earth.gltf"));
+
 		await base.OnInitializedAsync();
 	}
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		Console.WriteLine($"OnAfterRenderAsync({firstRender})");
+		await Task.Delay(100);
+		Console.WriteLine($"OnAfterRenderAsync({firstRender}) loadWave:{loadWave}");
 
-		if(firstRender)
+		if(!loadFinished)
 		{
-			//entities.Add("entities/b1", new ABox("red",0,0,0,0,0,0,1,1,1));
-			//entities.Add("entities/b2", new ABox("green",2,2,2,0,0,0,1,1,1));
-			//entities.Add("entities/b3", new ABox("blue",4,4,4,0,0,0,1,1,1));
-			//entities.Add("entities/b4", new ABox("orange",6,6,6,0,0,0,1,1,1));
-			//entities.Add("entities/b5", new ABox("yellow",8,8,8,0,0,0,1,1,1));
-			
-			entities.Add("entities/floor", new ABox("black",0,-1,0,0,0,0,30,0.1,30));
-			entities.Add("entities/collider", new AModel("models/collider.gltf",true,0,0,0,0,0,0,scale,scale,scale));
-			entities.Add("entities/cube", new AModel("models/cube.gltf",false,0,0,0,0,0,0,scale,scale,scale));
-			entities.Add("entities/circle", new AModel("models/circle.gltf",false,0,0,0,0,0,0,scale,scale,scale));
-			entities.Add("entities/leaves", new AModel("models/leaves.gltf",false,0,0,0,0,0,0,scale,scale,scale));
-			entities.Add("entities/bench", new AModel("models/bench.gltf",true,0,0,0,0,0,0,scale,scale,scale));
-			entities.Add("entities/ghost", new AModel("models/ghost.gltf",false,0,0,0,0,0,0,scale,scale,scale));
-
-			// little sign with:
-			// "Stylized Mangrove Greenhouse by Andrey Bársh"
-			// "VR port by arteeh"
+			switch(loadWave)
+			{
+				case 0:
+					entities.Add("entities/ccollideonly", new AModel("Assets/CCollideOnly.gltf"));
+					break;
+				case 1:
+					entities.Add("entities/cpebbles", new AModel("Assets/CPebbles.gltf")); // maybe no collision
+					break;
+				case 2:
+					entities.Add("entities/bench", new AModel("Assets/Bench.gltf"));
+					entities.Add("entities/chair", new AModel("Assets/Chair.gltf"));
+					break;
+				case 3:
+					// TODO: move these back and forth
+					entities.Add("entities/containerfloating", new AModel("Assets/ContainerFloating.gltf"));
+					entities.Add("entities/lily00", new AModel("Assets/Lily00.gltf"));
+					entities.Add("entities/lily01", new AModel("Assets/Lily01.gltf"));
+					break;
+				case 4:
+					entities.Add("entities/cleaves", new AModel("Assets/CLeaves.gltf", false));
+					break;
+				case 5:
+					entities.Add("entities/door", new AModel("Assets/Door.gltf", false));
+					break;
+				case 6:
+					entities.Add("entities/cphysical", new AModel("Assets/CPhysical.gltf"));
+					break;
+				default:
+					loadFinished = true;
+					break;
+			}
+			loadWave++;
 			StateHasChanged();
 		}
+		
+		// TODO: little sign with:
+		// "Stylized Mangrove Greenhouse by Andrey Bársh"
+		// "VR port by arteeh"
 	}
 
 }	

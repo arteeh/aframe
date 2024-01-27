@@ -16,7 +16,7 @@
 	public ALink() {}
 
 	public ALink(string title, string href, string imageHref,
-		double posX, double posY, double posZ, double rotX, double rotY, double rotZ) : base(posX,posY,posZ,rotX,rotY,rotZ,1,1,1)
+		double posX = 0, double posY = 0, double posZ = 0, double rotX = 0, double rotY = 0, double rotZ = 0, double sclX = 1, double sclY = 1, double sclZ = 1) : base(posX,posY,posZ,rotX,rotY,rotZ,sclX,sclY,sclZ)
 	{
 		Title = title;
 		Href = href;
