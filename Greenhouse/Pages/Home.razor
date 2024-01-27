@@ -3,6 +3,8 @@
 @using Common
 @using Common.Components
 
+<AModel GLTFHref="Assets/Earth.gltf" CollisionType=CollisionType.ConvexRecursive />
+
 @* <ASky Color="#040020"></ASky> *@
 <a-entity environment="preset: starry; ground: none;"></a-entity>
 
@@ -11,11 +13,16 @@
 	<DynamicComponent Type="@e.GetType()" Parameters="@ComponentParameters.Get(e)" />
 }
 
+@* <script>
+	window.loadDoneCallback = () => {
+    	DotNet.invokeMethodAsync('Greenhouse','OnLoadDoneCallback');
+	}
+</script> *@
+
 @code {
 
 	private Dictionary<string, ComponentBase> entities = new();
-	private uint loadWave = 0;
-	private bool loadFinished = false;
+	private Queue<(string, ComponentBase)> entityLoadQueue = new();
 	protected override async Task OnParametersSetAsync()
 	{
 		Console.WriteLine("OnParametersSetAsync");
@@ -26,57 +33,42 @@
 	{
 		Console.WriteLine("OnInitializedAsync");
 
-		entities.Add("entities/floor", new ABox("black", posY:-1, sclX:40, sclY:0.1, sclZ:40));
-		entities.Add("entities/earth", new AModel("Assets/Earth.gltf"));
+		entityLoadQueue.Enqueue(("entities/ccollideonly", new AModel("Assets/CCollideOnly.gltf", CollisionType.NonconvexRecursive)));
+		entityLoadQueue.Enqueue(("entities/cpebbles", new AModel("Assets/CPebbles.gltf"))); // maybe no collision
+		entityLoadQueue.Enqueue(("entities/cleaves", new AModel("Assets/CLeaves.gltf", CollisionType.None)));
+		entityLoadQueue.Enqueue(("entities/door", new AModel("Assets/Door.gltf", CollisionType.None)));
+		entityLoadQueue.Enqueue(("entities/cphysical", new AModel("Assets/CPhysical.gltf")));
+		entityLoadQueue.Enqueue(("entities/bench", new AModel("Assets/Bench.gltf")));
+		entityLoadQueue.Enqueue(("entities/chair", new AModel("Assets/Chair.gltf")));
+		entityLoadQueue.Enqueue(("entities/containerfloating", new AModel("Assets/ContainerFloating.gltf")));
+		entityLoadQueue.Enqueue(("entities/lily00", new AModel("Assets/Lily00.gltf")));
+		entityLoadQueue.Enqueue(("entities/lily01", new AModel("Assets/Lily01.gltf")));
 
 		await base.OnInitializedAsync();
 	}
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		await Task.Delay(100);
-		Console.WriteLine($"OnAfterRenderAsync({firstRender}) loadWave:{loadWave}");
+		Console.WriteLine($"OnAfterRenderAsync({firstRender})");
 
-		if(!loadFinished)
+		(string topic,ComponentBase component) toDequeue;
+		if(entityLoadQueue.TryDequeue(out toDequeue))
 		{
-			switch(loadWave)
-			{
-				case 0:
-					entities.Add("entities/ccollideonly", new AModel("Assets/CCollideOnly.gltf"));
-					break;
-				case 1:
-					entities.Add("entities/cpebbles", new AModel("Assets/CPebbles.gltf")); // maybe no collision
-					break;
-				case 2:
-					entities.Add("entities/bench", new AModel("Assets/Bench.gltf"));
-					entities.Add("entities/chair", new AModel("Assets/Chair.gltf"));
-					break;
-				case 3:
-					// TODO: move these back and forth
-					entities.Add("entities/containerfloating", new AModel("Assets/ContainerFloating.gltf"));
-					entities.Add("entities/lily00", new AModel("Assets/Lily00.gltf"));
-					entities.Add("entities/lily01", new AModel("Assets/Lily01.gltf"));
-					break;
-				case 4:
-					entities.Add("entities/cleaves", new AModel("Assets/CLeaves.gltf", false));
-					break;
-				case 5:
-					entities.Add("entities/door", new AModel("Assets/Door.gltf", false));
-					break;
-				case 6:
-					entities.Add("entities/cphysical", new AModel("Assets/CPhysical.gltf"));
-					break;
-				default:
-					loadFinished = true;
-					break;
-			}
-			loadWave++;
+			//await Task.Delay(2000); // replace with "wait until done loading previous model"
+			entities.Add(toDequeue.topic,toDequeue.component);
 			StateHasChanged();
 		}
 		
 		// TODO: little sign with:
 		// "Stylized Mangrove Greenhouse by Andrey Bársh"
 		// "VR port by arteeh"
+	}
+
+	[JSInvokable("OnLoadDoneCallback")]
+	public static Task OnLoadDoneCallback()
+	{
+		Console.WriteLine($"OnLoadDoneCallback");
+		return Task.CompletedTask;
 	}
 
 }	

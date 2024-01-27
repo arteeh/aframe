@@ -1,12 +1,23 @@
 ﻿@inherits AEntity
 
-@if(Collider)
+@switch(CollisionType)
 {
-	<a-entity sq-nonconvexcollider="recursive: true" gltf-model="@GLTFHref" position="@Pos" rotation="@Rot" scale="@Scl"></a-entity>
-}
-else
-{
-	<a-entity gltf-model="@GLTFHref" position="@Pos" rotation="@Rot" scale="@Scl"></a-entity>
+	case CollisionType.None:
+		<a-entity gltf-model="@GLTFHref" position="@Pos" rotation="@Rot" scale="@Scl"></a-entity>
+		break;
+	case CollisionType.Convex:
+		<a-entity sq-collider gltf-model="@GLTFHref" position="@Pos" rotation="@Rot" scale="@Scl"></a-entity>
+		break;
+	case CollisionType.ConvexRecursive:
+		<a-entity sq-collider="recursive: true" gltf-model="@GLTFHref" position="@Pos" rotation="@Rot" scale="@Scl"></a-entity>
+		break;
+	case CollisionType.Nonconvex:
+		<a-entity sq-nonconvexcollider gltf-model="@GLTFHref" position="@Pos" rotation="@Rot" scale="@Scl"></a-entity>
+		break;
+	case CollisionType.NonconvexRecursive:
+		<a-entity sq-nonconvexcollider="recursive: true" gltf-model="@GLTFHref" position="@Pos" rotation="@Rot" scale="@Scl"></a-entity>
+		break;
+	
 }
 
 @code {
@@ -15,15 +26,15 @@ else
 	public string GLTFHref { get; set; } = "";
 
 	[Parameter]
-	public bool Collider { get; set; } = true;
+	public CollisionType CollisionType { get; set; } = CollisionType.NonconvexRecursive;
 
 	public AModel() {}
 
-	public AModel(string gltfHref, bool collider = true,
+	public AModel(string gltfHref, CollisionType collisionType = CollisionType.NonconvexRecursive,
 		double posX = 0, double posY = 0, double posZ = 0, double rotX = 0, double rotY = 0, double rotZ = 0, double sclX = 1, double sclY = 1, double sclZ = 1) : base(posX,posY,posZ,rotX,rotY,rotZ,sclX,sclY,sclZ)
 	{
 		GLTFHref = gltfHref;
-		Collider = collider;
+		CollisionType = collisionType;
 	}
 
 }
