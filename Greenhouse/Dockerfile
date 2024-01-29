@@ -8,7 +8,6 @@ WORKDIR /src
 COPY . ./
 RUN dotnet publish ./Greenhouse/Greenhouse.csproj -a $TARGETARCH -c Release -o /publish
 
-
 FROM --platform=$TARGETARCH nginx:alpine
 ARG TARGETARCH
 ARG BUILDPLATFORM
