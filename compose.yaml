@@ -31,17 +31,7 @@ services:
       - banter-network
     build:
       context: .
-      dockerfile: ./Unity/Dockerfile
-
-  # greenhouse:
-  #   image: arteeh/banter-greenhouse
-  #   container_name: greenhouse
-  #   restart: unless-stopped
-  #   networks:
-  #     - banter-network
-  #   build:
-  #     context: .
-  #     dockerfile: ./Greenhouse/Dockerfile
+      dockerfile: ./Greenhouse/Dockerfile
 
 volumes:
 
