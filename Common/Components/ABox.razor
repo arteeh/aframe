@@ -1,6 +1,4 @@
-﻿@inherits AEntity
-
-<a-entity sq-boxcollider geometry="primitive: box" material="color: @Color; opacity: @Opacity;" position="@Pos" rotation="@Rot" scale="@Scl" />
+﻿<a-entity sq-boxcollider geometry="primitive: box" material="color: @Color; opacity: @Opacity;" position="@P" rotation="@R" scale="@S" />
 
 @code {
 
@@ -10,13 +8,22 @@
 	[Parameter]
 	public double Opacity { get; set; } = 1.0;
 
-	public ABox() {}
+	public readonly Base.Position P;
+	public readonly Base.Rotation R;
+	public readonly Base.Scale S;
+
+	public ABox() { P = new(); R = new(); S = new(); }
 
 	public ABox(string? color = null, double opacity = 1.0,
-		double posX = 0, double posY = 0, double posZ = 0, double rotX = 0, double rotY = 0, double rotZ = 0, double sclX = 1, double sclY = 1, double sclZ = 1) : base(posX,posY,posZ,rotX,rotY,rotZ,sclX,sclY,sclZ)
+		double posX = 0, double posY = 0, double posZ = 0,
+		double rotX = 0, double rotY = 0, double rotZ = 0,
+		double sclX = 1, double sclY = 1, double sclZ = 1)
 	{
 		Color = color;
 		Opacity = opacity;
+		P = new(posX,posY,posZ);
+		R = new(rotX,rotY,rotZ);
+		S = new(sclX,sclY,sclZ);
 	}
 
 }

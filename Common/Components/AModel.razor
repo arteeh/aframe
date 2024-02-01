@@ -1,21 +1,19 @@
-﻿@inherits AEntity
-
-@switch(CollisionType)
+﻿@switch(CollisionType)
 {
 	case CollisionType.None:
-		<a-entity id="@Topic" model-loaded="@OnModelLoaded()" gltf-model="@GLTFHref" position="@Pos" rotation="@Rot" scale="@Scl"></a-entity>
+		<a-entity id="@Topic" model-loaded="@OnModelLoaded()" gltf-model="@GLTFHref" position="@P" rotation="@R" scale="@S"></a-entity>
 		break;
 	case CollisionType.Convex:
-		<a-entity id="@Topic" model-loaded="@OnModelLoaded()" gltf-model="@GLTFHref" position="@Pos" rotation="@Rot" scale="@Scl" sq-collider></a-entity>
+		<a-entity id="@Topic" model-loaded="@OnModelLoaded()" gltf-model="@GLTFHref" position="@P" rotation="@R" scale="@S" sq-collider></a-entity>
 		break;
 	case CollisionType.ConvexRecursive:
-		<a-entity id="@Topic" model-loaded="@OnModelLoaded()" gltf-model="@GLTFHref" position="@Pos" rotation="@Rot" scale="@Scl" sq-collider="recursive: true"></a-entity>
+		<a-entity id="@Topic" model-loaded="@OnModelLoaded()" gltf-model="@GLTFHref" position="@P" rotation="@R" scale="@S" sq-collider="recursive: true"></a-entity>
 		break;
 	case CollisionType.Nonconvex:
-		<a-entity id="@Topic" model-loaded="@OnModelLoaded()" gltf-model="@GLTFHref" position="@Pos" rotation="@Rot" scale="@Scl" sq-nonconvexcollider></a-entity>
+		<a-entity id="@Topic" model-loaded="@OnModelLoaded()" gltf-model="@GLTFHref" position="@P" rotation="@R" scale="@S" sq-nonconvexcollider></a-entity>
 		break;
 	case CollisionType.NonconvexRecursive:
-		<a-entity id="@Topic" model-loaded="@OnModelLoaded()" gltf-model="@GLTFHref" position="@Pos" rotation="@Rot" scale="@Scl" sq-nonconvexcollider="recursive: true"></a-entity>
+		<a-entity id="@Topic" model-loaded="@OnModelLoaded()" gltf-model="@GLTFHref" position="@P" rotation="@R" scale="@S" sq-nonconvexcollider="recursive: true"></a-entity>
 		break;
 }
 
@@ -33,15 +31,24 @@
 	[Parameter]
 	public CollisionType CollisionType { get; set; } = CollisionType.NonconvexRecursive;
 
-	public AModel() {}
+	private Base.Position P;
+	private Base.Rotation R;
+	private Base.Scale S;
+
+	public AModel() { P = new(); R = new(); S = new(); }
 
 	public AModel(string topic, string gltfHref, EventCallback<string> onModelLoadedCallback, CollisionType collisionType = CollisionType.NonconvexRecursive,
-		double posX = 0, double posY = 0, double posZ = 0, double rotX = 0, double rotY = 0, double rotZ = 0, double sclX = 1, double sclY = 1, double sclZ = 1) : base(posX,posY,posZ,rotX,rotY,rotZ,sclX,sclY,sclZ)
+		double posX = 0, double posY = 0, double posZ = 0,
+		double rotX = 0, double rotY = 0, double rotZ = 0,
+		double sclX = 1, double sclY = 1, double sclZ = 1)
 	{
 		Topic = topic;
 		GLTFHref = gltfHref;
 		OnModelLoadedCallback = onModelLoadedCallback;
 		CollisionType = collisionType;
+		P = new(posX,posY,posZ);
+		R = new(rotX,rotY,rotZ);
+		S = new(sclX,sclY,sclZ);
 	}
 
 	public async Task OnModelLoaded()

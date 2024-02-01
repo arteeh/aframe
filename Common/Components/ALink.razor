@@ -1,6 +1,4 @@
-﻿@inherits AEntity
-
-<a-link title="@Title" href="@Href" image="@ImageHref" position="@Pos" rotation="@Rot"></a-link>
+﻿<a-link title="@Title" href="@Href" image="@ImageHref" position="@P" rotation="@R" />
 
 @code {
 
@@ -13,14 +11,20 @@
 	[Parameter]
 	public string ImageHref { get; set; } = "https://logo.clearbit.com/sidequestvr.com";
 
-	public ALink() {}
+	private Base.Position P;
+	private Base.Rotation R;
+
+	public ALink() { P = new(); R = new(); }
 
 	public ALink(string title, string href, string imageHref,
-		double posX = 0, double posY = 0, double posZ = 0, double rotX = 0, double rotY = 0, double rotZ = 0, double sclX = 1, double sclY = 1, double sclZ = 1) : base(posX,posY,posZ,rotX,rotY,rotZ,sclX,sclY,sclZ)
+		double posX = 0, double posY = 0, double posZ = 0,
+		double rotX = 0, double rotY = 0, double rotZ = 0)
 	{
 		Title = title;
 		Href = href;
 		ImageHref = imageHref;
+		P = new(posX,posY,posZ);
+		R = new(rotX,rotY,rotZ);
 	}
 
 }

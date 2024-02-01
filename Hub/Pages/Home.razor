@@ -1,7 +1,5 @@
 ﻿@page "/"
 
-@using banter.Components
-
 <a-sphere sq-collider position="0 1.25 -1" radius="1.25" color="#EF2D5E"></a-sphere>
 <a-cylinder sq-collider position="1 0.75 1" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
 <a-plane sq-collider position="0 0 0" rotation="-90 0 0" width="9" height="9" color="#7BC8A4"></a-plane>
@@ -61,15 +59,16 @@
 	</a-entity>
 </a-entity>
 
-@foreach (AEntity e in entities.Values)
+@foreach (ComponentBase e in entities.Values)
 {
-	<DynamicComponent Type="@e.GetType()" Parameters="@ComponentParameters.Get(e)" />
+	<DynamicComponent Type="@e.GetType()" Parameters="ComponentParameters.Get(e)" />
 }
 
 @code {
 
 	bool direction = true;
-	private Dictionary<string,AEntity> entities = new();
+	private Dictionary<string, ComponentBase> entities = new();
+	private EventCallback<string> ec;
 
 	protected override async Task OnParametersSetAsync()
 	{
@@ -91,7 +90,6 @@
 		{
 			entities.Add("entities/mirror1", new AMirror(-2,1,10,0,180,0,4,4,4));
 			entities.Add("entities/abox1", new ABox("#4CC3D9",0,0.5,-3,0,45,0,1,1,1));
-			entities.Add("entities/greenhouse1", new AModel("greenhouse/scene.gltf",20,3,10,0,0,0,1,1,1));
 			StateHasChanged();
 
 			GameLoop();
@@ -100,20 +98,20 @@
 
 	private async Task GameLoop()
 	{
-		PeriodicTimer t = new(TimeSpan.FromMicroseconds(1000000 / 2));
+		PeriodicTimer t = new(TimeSpan.FromMicroseconds(1000000 / 10));
 
 		while (await t.WaitForNextTickAsync())
 		{
-			AEntity? a;
+			ComponentBase? a;
 			if(entities.TryGetValue("entities/abox1", out a))
 			{
 				ABox ab = (ABox) a;
 
-				if (2 < a.PosX) direction = false;
-				else if (a.PosX < 0) direction = true;
+				if (2 < ab.P.PosX) direction = false;
+				else if (ab.P.PosX < 0) direction = true;
 
-				if (direction) a.PosX += 0.01;
-				else a.PosX -= 0.01;
+				if (direction) ab.P.PosX += 0.01;
+				else ab.P.PosX -= 0.01;
 
 				StateHasChanged();
 			}

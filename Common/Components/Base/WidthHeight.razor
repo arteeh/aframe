@@ -1,0 +1,16 @@
+﻿@code
+{
+	[Parameter]
+	public double Width { get; set; } = 1;
+
+	[Parameter]
+	public double Height { get; set; } = 1;
+
+	public WidthHeight() { }
+
+	public WidthHeight(double width, double height)
+	{
+		Width = width;
+		Height = height;
+	}
+}

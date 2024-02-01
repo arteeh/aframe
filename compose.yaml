@@ -20,9 +20,9 @@ services:
     restart: unless-stopped
     networks:
       - banter-network
-    #build:
-    #  context: ./banter
-  
+    build:
+      context: ./banter
+
   greenhouse:
     image: arteeh/banter-greenhouse
     container_name: greenhouse
@@ -31,16 +31,17 @@ services:
       - banter-network
     build:
       context: .
-      dockerfile: ./Greenhouse/Dockerfile
+      dockerfile: ./Unity/Dockerfile
 
-  # hub:
-  #   image: arteeh/banter-hub
-  #   container_name: banter
+  # greenhouse:
+  #   image: arteeh/banter-greenhouse
+  #   container_name: greenhouse
   #   restart: unless-stopped
   #   networks:
   #     - banter-network
   #   build:
-  #     context: ./banter
+  #     context: .
+  #     dockerfile: ./Greenhouse/Dockerfile
 
 volumes:
 
