@@ -49,7 +49,7 @@
 
 		if(firstRender)
 		{
-			entityLoadQueue.Enqueue(("entities/earth",			new AModel("entities/earth",		"Assets/Earth.gltf",		ec, CollisionType.ConvexRecursive)));
+			entityLoadQueue.Enqueue(("entities/earth",			new AModel("entities/earth",		"#earth",					ec, CollisionType.ConvexRecursive)));
 			entityLoadQueue.Enqueue(("entities/ccollideonly",	new AModel("entities/ccollideonly",	"Assets/CCollideOnly.gltf",	ec, CollisionType.NonconvexRecursive)));
 			entityLoadQueue.Enqueue(("entities/cpebbles",		new AModel("entities/cpebbles",		"Assets/CPebbles.gltf",		ec))); // maybe no collision
 			entityLoadQueue.Enqueue(("entities/cleaves",		new AModel("entities/cleaves",		"Assets/CLeaves.gltf",		ec, CollisionType.None)));
