@@ -21,7 +21,7 @@ services:
     networks:
       - banter-network
     build:
-      context: ./banter
+      context: ./Hub
 
   greenhouse:
     image: arteeh/banter-greenhouse
