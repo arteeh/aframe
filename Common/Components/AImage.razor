@@ -2,12 +2,10 @@
 
 @code {
 
-	[Parameter]
-	public string ImagePath { get; set; } = "";
-
-	private Base.WidthHeight WH;
-	private Base.Position P;
-	private Base.Rotation R;
+	[Parameter] public string ImagePath { get; set; } = "";
+	[Parameter] public Base.WidthHeight WH { get; set; }
+	[Parameter] public Base.Position P { get; set; }
+	[Parameter] public Base.Rotation R { get; set; }
 
 	public AImage() { P = new(); R = new(); WH = new(); }
 

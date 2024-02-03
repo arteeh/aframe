@@ -15,7 +15,7 @@ services:
       - 443:443
 
   hub:
-    image: arteeh/banter-hub
+    image: arteeh/banter-hub:latest
     container_name: hub
     restart: unless-stopped
     networks:
@@ -25,7 +25,7 @@ services:
       dockerfile: ./Hub/Dockerfile
 
   greenhouse:
-    image: arteeh/banter-greenhouse
+    image: arteeh/banter-greenhouse:latest
     container_name: greenhouse
     restart: unless-stopped
     networks:
