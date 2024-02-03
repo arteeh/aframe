@@ -3,20 +3,26 @@
 <head>
 	<meta name="sidequest-space-verification" content="8e0a6c31-aad3-4939-9e65-f93fde608012">
 	<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+	<!-- <script src="https://unpkg.com/aframe-environment-component@1.3.4/dist/aframe-environment-component.min.js"></script> -->
 </head>
 <body>
 	<a-scene sq-hidedefaulttextures sq-spawnpoint="position: 9 0.25 4;">
 
 		<a-assets>
 			<a-asset-item id="earth" src="Assets/Earth.gltf"></a-asset-item>
+			<img id="sky" src="Assets/textures/gaia.png"></img>
+			<img id="signimage" src="Assets/textures/signimagebg.png"></img>
+			<a-asset-item id="ccollideonly" src="Assets/CCollideOnly.gltf"></a-asset-item>
+			<a-asset-item id="cpebbles" src="Assets/CPebbles.gltf"></a-asset-item>
 		</a-assets>
 
+		<!-- <a-entity environment="preset: starry; ground: none;"></a-entity> -->
+
 		<a-entity position="0 0 0" id="app"></a-entity>
+
+		<a-sky src="#sky" ></a-sky>
 		
 	</a-scene>
 	<script src="_framework/blazor.webassembly.js"></script>
 </body>
 </html>
-
-<!-- https://github.com/supermedium/aframe-environment-component -->
-<!-- <script src="https://unpkg.com/aframe-environment-component@1.3.4/dist/aframe-environment-component.min.js"></script> -->
