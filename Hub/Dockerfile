@@ -6,8 +6,7 @@ RUN apt update -y && apt install python3 -y
 RUN dotnet workload install wasm-tools
 WORKDIR /src
 COPY . ./
-RUN dotnet publish -a $TARGETARCH -c Release -o /publish
-
+RUN dotnet publish ./Hub/Hub.csproj -a $TARGETARCH -c Release -o /publish
 
 FROM --platform=$TARGETARCH nginx:alpine
 ARG TARGETARCH
