@@ -4,22 +4,22 @@
 
 @page "/"
 
-@* <APlane	Color="red"		Opacity=0.0	P="new Position(1,0,0)"		R="new Rotation(-90,0,0)"	WH="new WidthHeight(20,24)"	/> <!-- invfloor -->
-<APlane	Color="green"	Opacity=0.0 P="new Position(11,3,0)"	R="new Rotation(0,90,0)"	WH="new WidthHeight(24,6)"	/> <!-- invwallwest -->
-<APlane	Color="blue"	Opacity=0.0 P="new Position(1,3,12)"	R="new Rotation(0,0,0)"		WH="new WidthHeight(20,6)"	/> <!-- invwallnorth -->
-<APlane	Color="yellow"	Opacity=0.0 P="new Position(1,3,-12)"	R="new Rotation(0,0,0)"		WH="new WidthHeight(20,6)"	/> <!-- invwallsouth -->
-<APlane	Color="pink"	Opacity=0.0 P="new Position(-9,3,0)"	R="new Rotation(0,90,0)"	WH="new WidthHeight(24,6)"	/> <!-- invwalleast --> *@
-
 <!-- Static objects go here -->
+
+<APlane	Color="red"	Opacity=0.1 OnCollideCallback="@clc"	P="new Position(001,-01,000)"	R="new Rotation(-90,0,0)"	WH="new WidthHeight(30,30)"	/> <!-- invfloor -->
+@* <APlane	Color="green"		Opacity=0.1 P="new Position(011,002,000)"	R="new Rotation(0,90,0)"	WH="new WidthHeight(24,6)"	/> <!-- invwallwest --> *@
+@* <APlane	Color="blue"		Opacity=0.1 P="new Position(001,002,012)"	R="new Rotation(0,0,0)"		WH="new WidthHeight(20,6)"	/> <!-- invwallnorth --> *@
+@* <APlane	Color="yellow"		Opacity=0.1 P="new Position(001,002,-12)"	R="new Rotation(0,0,0)"		WH="new WidthHeight(20,6)"	/> <!-- invwallsouth --> *@
+@* <APlane	Color="pink"		Opacity=0.1 P="new Position(-09,002,000)"	R="new Rotation(0,90,0)"	WH="new WidthHeight(24,6)"	/> <!-- invwalleast --> *@
 <AModel Topic="earth"			GLTFHref="#earth"			CollisionType="CollisionType.ConvexRecursive"></AModel>
-<AModel Topic="ccollideonly"	GLTFHref="#ccollideonly"	CollisionType="CollisionType.ConvexRecursive"></AModel>
-<AModel Topic="cpebbles"		GLTFHref="#cpebbles"		CollisionType="CollisionType.ConvexRecursive"></AModel>
+<AModel Topic="ccollideonly"	GLTFHref="#ccollideonly"	CollisionType="CollisionType.NonconvexRecursive"></AModel>
+<AModel Topic="cpebbles"		GLTFHref="#cpebbles"		CollisionType="CollisionType.NonconvexRecursive"></AModel>
 <AModel	Topic="cleaves"			GLTFHref="#cleaves"			CollisionType="CollisionType.None"></AModel>
 <AModel	Topic="door"			GLTFHref="#door"			CollisionType="CollisionType.None"></AModel>
-<AModel	Topic="bench"			GLTFHref="#bench"			CollisionType="CollisionType.ConvexRecursive"></AModel>
+<AModel	Topic="bench"			GLTFHref="#bench"			CollisionType="CollisionType.NonconvexRecursive"></AModel>
 <AModel	Topic="chair"			GLTFHref="#chair"			CollisionType="CollisionType.ConvexRecursive"></AModel>
 <AModel	Topic="sign"			GLTFHref="#sign"			CollisionType="CollisionType.ConvexRecursive"></AModel>
-<AImage ImagePath="#signimage" P="@(new Position(9.09,1.1,6.21))" R="@(new Rotation(-10,219,5))" WH="@(new WidthHeight(1.2,0.5))"></AImage>
+<AImage ImagePath="#signimage"	P="@(new Position(9.09,1.1,6.21))"	R="@(new Rotation(-10,219,5))"	WH="@(new WidthHeight(1.2,0.5))"></AImage>
 
 @foreach (ComponentBase e in entities.Values)
 {
@@ -30,7 +30,8 @@
 {
 	private Dictionary<string, ComponentBase> entities = new();
 	private Queue<(string, ComponentBase)> entityLoadQueue = new();
-	private EventCallback<string> ec;
+	private EventCallback<string> mlc;
+	private EventCallback<string> clc;
 
 	AModel cphysical;
 	AModel cntnrfltng;
@@ -41,12 +42,13 @@
 	{
 		Console.WriteLine("OnInitializedAsync");
 		
-		ec = EventCallback.Factory.Create<string>(this, OnModelLoadedCallback);
+		mlc = EventCallback.Factory.Create<string>(this, OnModelLoadedCallback);
+		clc = EventCallback.Factory.Create<string>(this, OnCollideCallback);
 		
-		cphysical = new("cphysical", "#cphysical", ec, CollisionType.ConvexRecursive);
-		cntnrfltng = new("cntnrfltng", "#cntnrfltng", ec, CollisionType.ConvexRecursive);
-		lily00 = new("lily00", "#lily00", ec, CollisionType.ConvexRecursive);
-		lily01 = new("lily01", "#lily01", ec, CollisionType.ConvexRecursive);
+		cphysical	= new("cphysical", "#cphysical", mlc, collisionType: CollisionType.ConvexRecursive);
+		cntnrfltng	= new("cntnrfltng", "#cntnrfltng", mlc, collisionType: CollisionType.ConvexRecursive);
+		lily00		= new("lily00", "#lily00", mlc, collisionType: CollisionType.ConvexRecursive);
+		lily01		= new("lily01", "#lily01", mlc, collisionType: CollisionType.ConvexRecursive);
 
 		await base.OnInitializedAsync();
 	}
@@ -80,6 +82,11 @@
 		_ = LoadNextModel();
 	}
 	
+	private void OnCollideCallback(string topic)
+	{
+		Console.WriteLine($"Collided with {topic}");
+	}
+	
 	private async Task LoadNextModel()
 	{
 		await Task.Run(() =>
@@ -96,9 +103,8 @@
 				{
 					Console.WriteLine($"Adding {toDequeue.topic}");
 					entities.Add(toDequeue.topic,toDequeue.component);
+					StateHasChanged();
 				}
-				
-				StateHasChanged();
 			}
 		});
 	}

@@ -1,33 +1,49 @@
-﻿<a-plane sq-collider color="@Color" position="@P" rotation="@R" width="@WH.Width" height="@WH.Height" material="opacity: @Opacity; side: double;" />
+﻿<a-plane @attributes="@attributes" sq-collider color="@Color" position="@P" rotation="@R" width="@WH.Width" height="@WH.Height" material="opacity: @Opacity; side: double;" />
 
 @code
 {
-	[Parameter]
-	public string? Color { get; set; }
+	[Parameter] public string Topic { get; set; }
+	[Parameter] public string? Color { get; set; }
+	[Parameter] public double Opacity { get; set; }
+	[Parameter] public Base.Position P { get; set; }
+	[Parameter] public Base.Rotation R { get; set; }
+	[Parameter] public Base.WidthHeight WH { get; set; }
+	[Parameter] public EventCallback<string> OnCollideCallback { get; set; }
+	
+	private Dictionary<string, object> attributes;
 
-	[Parameter]
-	public double Opacity { get; set; }
+	public APlane() { Topic = ""; P = new(); R = new(); WH = new(); attributes = new(); }
 
-	[Parameter]
-	public Base.Position P { get; set; }
-
-	[Parameter]
-	public Base.Rotation R { get; set; }
-
-	[Parameter]
-	public Base.WidthHeight WH { get; set; }
-
-	public APlane() { P = new(); R = new(); WH = new(); }
-
-	public APlane(string? color = null, double opacity = 1.0,
+	public APlane(EventCallback<string> onCollideCallback = new EventCallback<string>(),
+		string topic = "", string? color = null, double opacity = 1.0,
 		double posX = 0, double posY = 0, double posZ = 0,
 		double rotX = 0, double rotY = 0, double rotZ = 0,
 		double width = 1, double height = 1)
 	{
+		Topic = topic;
 		Color = color;
 		Opacity = opacity;
 		P = new(posX,posY,posZ);
 		R = new(rotX,rotY,rotZ);
 		WH = new(width,height);
+		OnCollideCallback = onCollideCallback;
+		attributes = new();
+	}
+
+	protected override Task OnParametersSetAsync()
+	{
+		attributes.Clear();
+		if (OnCollideCallback.HasDelegate)
+		{
+			attributes.Add("sq-triggercollider", "");
+			attributes.Add("trigger-enter", OnCollideCallback);
+		}
+		
+		return Task.CompletedTask;
+	}
+	
+	public async Task OnCollide()
+	{
+		await OnCollideCallback.InvokeAsync(Topic);
 	}
 }

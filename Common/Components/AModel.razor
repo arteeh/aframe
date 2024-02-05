@@ -1,59 +1,84 @@
-﻿@switch(CollisionType)
+﻿<a-entity @attributes="@attributes" ></a-entity>
+
+@code
 {
-	case CollisionType.None:
-		<a-entity id="@Topic" model-loaded="@OnModelLoaded()" gltf-model="@GLTFHref" position="@P" rotation="@R" scale="@S"></a-entity>
-		break;
-	case CollisionType.Convex:
-		<a-entity id="@Topic" model-loaded="@OnModelLoaded()" gltf-model="@GLTFHref" position="@P" rotation="@R" scale="@S" sq-collider></a-entity>
-		break;
-	case CollisionType.ConvexRecursive:
-		<a-entity id="@Topic" model-loaded="@OnModelLoaded()" gltf-model="@GLTFHref" position="@P" rotation="@R" scale="@S" sq-collider="recursive: true"></a-entity>
-		break;
-	case CollisionType.Nonconvex:
-		<a-entity id="@Topic" model-loaded="@OnModelLoaded()" gltf-model="@GLTFHref" position="@P" rotation="@R" scale="@S" sq-nonconvexcollider></a-entity>
-		break;
-	case CollisionType.NonconvexRecursive:
-		<a-entity id="@Topic" model-loaded="@OnModelLoaded()" gltf-model="@GLTFHref" position="@P" rotation="@R" scale="@S" sq-nonconvexcollider="recursive: true"></a-entity>
-		break;
-}
+	[Parameter] public string Topic { get; set; }
+	[Parameter] public string GLTFHref { get; set; }
+	[Parameter] public Base.Position P { get; set; }
+	[Parameter] public Base.Rotation R { get; set; }
+	[Parameter] public Base.Scale S { get; set; }
+	[Parameter] public CollisionType CollisionType { get; set; }
+	[Parameter] public EventCallback<string> OnModelLoadedCallback { get; set; }
+	[Parameter] public EventCallback<string> OnCollideCallback { get; set; }
 
-@code {
+	private Dictionary<string, object> attributes;
 
-	[Parameter]
-	public string Topic { get; set; } = "";
+	public AModel()
+	{
+		Topic = ""; GLTFHref = "";
+		P = new(); R = new(); S = new(); attributes = new();
+		CollisionType = CollisionType.NonconvexRecursive;
+	}
 
-	[Parameter]
-	public string GLTFHref { get; set; } = "";
-
-	[Parameter]
-	public EventCallback<string> OnModelLoadedCallback { get; set; }
-
-	[Parameter]
-	public CollisionType CollisionType { get; set; } = CollisionType.NonconvexRecursive;
-
-	private Base.Position P;
-	private Base.Rotation R;
-	private Base.Scale S;
-
-	public AModel() { P = new(); R = new(); S = new(); }
-
-	public AModel(string topic, string gltfHref, EventCallback<string> onModelLoadedCallback, CollisionType collisionType = CollisionType.NonconvexRecursive,
+	public AModel(string topic, string gltfHref,
+		EventCallback<string> onModelLoadedCallback = new EventCallback<string>(),
+		EventCallback<string> onCollideCallback = new EventCallback<string>(),
+		CollisionType collisionType = CollisionType.NonconvexRecursive,
 		double posX = 0, double posY = 0, double posZ = 0,
 		double rotX = 0, double rotY = 0, double rotZ = 0,
 		double sclX = 1, double sclY = 1, double sclZ = 1)
 	{
 		Topic = topic;
 		GLTFHref = gltfHref;
-		OnModelLoadedCallback = onModelLoadedCallback;
+		P = new(posX,posY,posZ); R = new(rotX,rotY,rotZ); S = new(sclX,sclY,sclZ);
 		CollisionType = collisionType;
-		P = new(posX,posY,posZ);
-		R = new(rotX,rotY,rotZ);
-		S = new(sclX,sclY,sclZ);
+		OnModelLoadedCallback = onModelLoadedCallback;
+		OnCollideCallback = onCollideCallback;
+		attributes = new();
+	}
+
+	protected override Task OnParametersSetAsync()
+	{
+		attributes.Clear();
+		attributes.Add("id",Topic);
+		attributes.Add("gltf-model", GLTFHref);
+		attributes.Add("position", P.ToString());
+		attributes.Add("rotation", R.ToString());
+		attributes.Add("scale", S.ToString());
+
+		switch (CollisionType)
+		{
+			case CollisionType.Convex:
+				attributes.Add("sq-collider",""); break;
+			case CollisionType.ConvexRecursive:
+				attributes.Add("sq-collider", "recursive: true"); break;
+			case CollisionType.Nonconvex:
+				attributes.Add("sq-nonconvexcollider", ""); break;
+			case CollisionType.NonconvexRecursive:
+				attributes.Add("sq-nonconvexcollider", "recursive: true"); break;
+		}
+
+		if (OnModelLoadedCallback.HasDelegate)
+		{
+			//attributes.Add("model-loaded", OnModelLoaded());
+		}
+
+		if (OnCollideCallback.HasDelegate)
+		{
+			attributes.Add("sq-triggercollider", "");
+			//attributes.Add("trigger-enter", OnCollide());
+		}
+
+		return Task.CompletedTask;
 	}
 
 	public async Task OnModelLoaded()
 	{
 		await OnModelLoadedCallback.InvokeAsync(Topic);
 	}
-
+	
+	public async Task OnCollide()
+	{
+		await OnCollideCallback.InvokeAsync(Topic);
+	}
 }
