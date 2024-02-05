@@ -9,7 +9,16 @@
 <APlane	Color="blue"	Opacity=0.0 P="new Position(1,3,12)"	R="new Rotation(0,0,0)"		WH="new WidthHeight(20,6)"	/> <!-- invwallnorth -->
 <APlane	Color="yellow"	Opacity=0.0 P="new Position(1,3,-12)"	R="new Rotation(0,0,0)"		WH="new WidthHeight(20,6)"	/> <!-- invwallsouth -->
 <APlane	Color="pink"	Opacity=0.0 P="new Position(-9,3,0)"	R="new Rotation(0,90,0)"	WH="new WidthHeight(24,6)"	/> <!-- invwalleast --> *@
-<AModel Topic="earth" GLTFHref="#earth" OnModelLoadedCallback="@ec" CollisionType="CollisionType.ConvexRecursive"></AModel>
+
+<!-- Static objects go here -->
+<AModel Topic="earth"			GLTFHref="#earth"			CollisionType="CollisionType.ConvexRecursive"></AModel>
+<AModel Topic="ccollideonly"	GLTFHref="#ccollideonly"	CollisionType="CollisionType.ConvexRecursive"></AModel>
+<AModel Topic="cpebbles"		GLTFHref="#cpebbles"		CollisionType="CollisionType.ConvexRecursive"></AModel>
+<AModel	Topic="cleaves"			GLTFHref="#cleaves"			CollisionType="CollisionType.None"></AModel>
+<AModel	Topic="door"			GLTFHref="#door"			CollisionType="CollisionType.None"></AModel>
+<AModel	Topic="bench"			GLTFHref="#bench"			CollisionType="CollisionType.ConvexRecursive"></AModel>
+<AModel	Topic="chair"			GLTFHref="#chair"			CollisionType="CollisionType.ConvexRecursive"></AModel>
+<AModel	Topic="sign"			GLTFHref="#sign"			CollisionType="CollisionType.ConvexRecursive"></AModel>
 <AImage ImagePath="#signimage" P="@(new Position(9.09,1.1,6.21))" R="@(new Rotation(-10,219,5))" WH="@(new WidthHeight(1.2,0.5))"></AImage>
 
 @foreach (ComponentBase e in entities.Values)
@@ -23,11 +32,21 @@
 	private Queue<(string, ComponentBase)> entityLoadQueue = new();
 	private EventCallback<string> ec;
 
+	AModel cphysical;
+	AModel cntnrfltng;
+	AModel lily00;
+	AModel lily01;
+
 	protected override async Task OnInitializedAsync()
 	{
 		Console.WriteLine("OnInitializedAsync");
 		
 		ec = EventCallback.Factory.Create<string>(this, OnModelLoadedCallback);
+		
+		cphysical = new("cphysical", "#cphysical", ec, CollisionType.ConvexRecursive);
+		cntnrfltng = new("cntnrfltng", "#cntnrfltng", ec, CollisionType.ConvexRecursive);
+		lily00 = new("lily00", "#lily00", ec, CollisionType.ConvexRecursive);
+		lily01 = new("lily01", "#lily01", ec, CollisionType.ConvexRecursive);
 
 		await base.OnInitializedAsync();
 	}
@@ -45,18 +64,10 @@
 
 		if(firstRender)
 		{
-			//entityLoadQueue.Enqueue(("earth",			new AModel("earth",			"#earth",					ec, CollisionType.ConvexRecursive)));
-			entityLoadQueue.Enqueue(("ccollideonly",	new AModel("ccollideonly",	"#ccollideonly",	ec, CollisionType.NonconvexRecursive)));
-			entityLoadQueue.Enqueue(("cpebbles",		new AModel("cpebbles",		"#cpebbles",		ec))); // maybe no collision
-			entityLoadQueue.Enqueue(("cleaves",			new AModel("cleaves",		"Assets/CLeaves.gltf",		ec, CollisionType.None)));
-			entityLoadQueue.Enqueue(("door",			new AModel("door",			"Assets/Door.gltf",			ec, CollisionType.None)));
-			entityLoadQueue.Enqueue(("cphysical",		new AModel("cphysical",		"Assets/CPhysical.gltf",	ec)));
-			entityLoadQueue.Enqueue(("bench",			new AModel("bench",			"Assets/Bench.gltf",		ec)));
-			entityLoadQueue.Enqueue(("chair",			new AModel("chair",			"Assets/Chair.gltf",		ec)));
-			entityLoadQueue.Enqueue(("containerfloating",new AModel("containerfloating","Assets/ContainerFloating.gltf",ec)));
-			entityLoadQueue.Enqueue(("lily00",			new AModel("lily00",		"Assets/Lily00.gltf",		ec)));
-			entityLoadQueue.Enqueue(("lily01",			new AModel("lily01",		"Assets/Lily01.gltf",		ec)));
-			entityLoadQueue.Enqueue(("sign", new AModel("sign", "Assets/Sign.gltf", ec, CollisionType.ConvexRecursive)));
+			entityLoadQueue.Enqueue(("cphysical", cphysical));
+			entityLoadQueue.Enqueue(("cntnrfltng", cntnrfltng));
+			entityLoadQueue.Enqueue(("lily00", lily00));
+			entityLoadQueue.Enqueue(("lily01", lily01));
 			
 			_ = LoadNextModel();
 		}
@@ -76,8 +87,17 @@
 			(string topic,ComponentBase component) toDequeue;
 			if(entityLoadQueue.TryDequeue(out toDequeue))
 			{
-				Console.WriteLine($"Adding {toDequeue.topic}");
-				entities.Add(toDequeue.topic,toDequeue.component);
+				if (entities.ContainsKey(toDequeue.topic))
+				{
+					Console.WriteLine($"Updating {toDequeue.topic}");
+					entities[toDequeue.topic] = toDequeue.component;
+				}
+				else
+				{
+					Console.WriteLine($"Adding {toDequeue.topic}");
+					entities.Add(toDequeue.topic,toDequeue.component);
+				}
+				
 				StateHasChanged();
 			}
 		});
