@@ -1,24 +1,26 @@
-﻿<a-plane @attributes="@attributes" sq-collider color="@Color" position="@P" rotation="@R" width="@WH.Width" height="@WH.Height" material="opacity: @Opacity; side: double;" />
+﻿@implements IHandleEvent
+
+<a-plane @attributes="@attributes" sq-collider sq-triggercollider trigger-handler color="@Color" position="@P" rotation="@R" width="@WH.Width" height="@WH.Height" material="opacity: @Opacity; side: double;" />
 
 @code
 {
-	[Parameter] public string Topic { get; set; }
-	[Parameter] public string? Color { get; set; }
-	[Parameter] public double Opacity { get; set; }
-	[Parameter] public Base.Position P { get; set; }
-	[Parameter] public Base.Rotation R { get; set; }
-	[Parameter] public Base.WidthHeight WH { get; set; }
-	[Parameter] public EventCallback<string> OnCollideCallback { get; set; }
-	
-	private Dictionary<string, object> attributes;
+	[Parameter] public string Topic { get; set; } = "UNSET";
+	[Parameter] public string? Color { get; set; } = "#FFFFFF";
+	[Parameter] public double Opacity { get; set; } = 1.0;
+	[Parameter] public Base.Position P { get; set; } = new();
+	[Parameter] public Base.Rotation R { get; set; } = new();
+	[Parameter] public Base.WidthHeight WH { get; set; } = new();
+	[Parameter] public EventCallback<string> OnCollideCallback { get; set; } = new EventCallback<string>();
 
-	public APlane() { Topic = ""; P = new(); R = new(); WH = new(); attributes = new(); }
+	private Dictionary<string, object> attributes = new();
 
-	public APlane(EventCallback<string> onCollideCallback = new EventCallback<string>(),
-		string topic = "", string? color = null, double opacity = 1.0,
+	public APlane() { }
+
+	public APlane(string topic = "", string? color = null, double opacity = 1.0,
 		double posX = 0, double posY = 0, double posZ = 0,
 		double rotX = 0, double rotY = 0, double rotZ = 0,
-		double width = 1, double height = 1)
+		double width = 1, double height = 1,
+		EventCallback<string> onCollideCallback = new EventCallback<string>())
 	{
 		Topic = topic;
 		Color = color;
@@ -27,7 +29,6 @@
 		R = new(rotX,rotY,rotZ);
 		WH = new(width,height);
 		OnCollideCallback = onCollideCallback;
-		attributes = new();
 	}
 
 	protected override Task OnParametersSetAsync()
@@ -35,8 +36,8 @@
 		attributes.Clear();
 		if (OnCollideCallback.HasDelegate)
 		{
-			attributes.Add("sq-triggercollider", "");
-			attributes.Add("trigger-enter", OnCollideCallback);
+			//attributes.Add("sq-triggercollider", "");
+			//attributes.Add("trigger-enter", OnCollide());
 		}
 		
 		return Task.CompletedTask;
@@ -46,4 +47,6 @@
 	{
 		await OnCollideCallback.InvokeAsync(Topic);
 	}
+	
+	Task IHandleEvent.HandleEventAsync(EventCallbackWorkItem callback, object? arg) => callback.InvokeAsync(arg);
 }

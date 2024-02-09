@@ -6,7 +6,8 @@
 
 <!-- Static objects go here -->
 
-<APlane	Color="red"	Opacity=0.1 OnCollideCallback="@clc"	P="new Position(001,-01,000)"	R="new Rotation(-90,0,0)"	WH="new WidthHeight(30,30)"	/> <!-- invfloor -->
+<APlane Topic="pink"	Color="pink"	OnCollideCallback="@clc"	Opacity=0.1	P="@(new Position(008,004,006))"	R="@(new Rotation(0,0,0))"		WH="@(new WidthHeight(5,5))"	/>
+<APlane	Topic="red"		Color="red"		Opacity=0.1	P="@(new Position(001,-03,000))"	R="@(new Rotation(-90,0,0))"	WH="@(new WidthHeight(30,30))"	/> <!-- invfloor -->
 @* <APlane	Color="green"		Opacity=0.1 P="new Position(011,002,000)"	R="new Rotation(0,90,0)"	WH="new WidthHeight(24,6)"	/> <!-- invwallwest --> *@
 @* <APlane	Color="blue"		Opacity=0.1 P="new Position(001,002,012)"	R="new Rotation(0,0,0)"		WH="new WidthHeight(20,6)"	/> <!-- invwallnorth --> *@
 @* <APlane	Color="yellow"		Opacity=0.1 P="new Position(001,002,-12)"	R="new Rotation(0,0,0)"		WH="new WidthHeight(20,6)"	/> <!-- invwallsouth --> *@
@@ -26,29 +27,46 @@
 	<DynamicComponent Type="@e.GetType()" Parameters="ComponentParameters.Get(e)" />
 }
 
+<script>
+AFRAME.registerComponent('trigger-handler', {
+	init: function() {
+		this.el.addEventListener('trigger-enter', ()=>{
+			if(this.el.object3D.userData.isLocalPlayer) {
+				// This is the current player triggering
+				console.log("trigger current player")
+			}else if(this.el.object3D.userData.other){
+				// This is another object, this.el.object3D.userData.other is the other HTML element.
+				console.log("trigger other thing")
+			}
+		});
+	}
+});
+</script>
+
 @code
 {
-	private Dictionary<string, ComponentBase> entities = new();
-	private Queue<(string, ComponentBase)> entityLoadQueue = new();
-	private EventCallback<string> mlc;
-	private EventCallback<string> clc;
+	private Dictionary<string, ComponentBase> entities;
+
+	EventCallback<string> clc;
 
 	AModel cphysical;
 	AModel cntnrfltng;
 	AModel lily00;
 	AModel lily01;
 
+	public Home()
+	{
+		entities = new();
+		clc = EventCallback.Factory.Create<string>(this, OnCollideCallback);
+		cphysical	= new("cphysical", "#cphysical", collisionType: CollisionType.ConvexRecursive);
+		cntnrfltng	= new("cntnrfltng", "#cntnrfltng", collisionType: CollisionType.ConvexRecursive);
+		lily00		= new("lily00", "#lily00", collisionType: CollisionType.ConvexRecursive);
+		lily01		= new("lily01", "#lily01", collisionType: CollisionType.ConvexRecursive);
+	}
+
 	protected override async Task OnInitializedAsync()
 	{
 		Console.WriteLine("OnInitializedAsync");
-		
-		mlc = EventCallback.Factory.Create<string>(this, OnModelLoadedCallback);
-		clc = EventCallback.Factory.Create<string>(this, OnCollideCallback);
-		
-		cphysical	= new("cphysical", "#cphysical", mlc, collisionType: CollisionType.ConvexRecursive);
-		cntnrfltng	= new("cntnrfltng", "#cntnrfltng", mlc, collisionType: CollisionType.ConvexRecursive);
-		lily00		= new("lily00", "#lily00", mlc, collisionType: CollisionType.ConvexRecursive);
-		lily01		= new("lily01", "#lily01", mlc, collisionType: CollisionType.ConvexRecursive);
 
 		await base.OnInitializedAsync();
 	}
@@ -66,46 +84,21 @@
 
 		if(firstRender)
 		{
-			entityLoadQueue.Enqueue(("cphysical", cphysical));
-			entityLoadQueue.Enqueue(("cntnrfltng", cntnrfltng));
-			entityLoadQueue.Enqueue(("lily00", lily00));
-			entityLoadQueue.Enqueue(("lily01", lily01));
-			
-			_ = LoadNextModel();
+			entities.Add("cphysical", cphysical);
+			entities.Add("cntnrfltng", cntnrfltng);
+			entities.Add("lily00", lily00);
+			entities.Add("lily01", lily01);
+			StateHasChanged();
 		}
 	}
 
 	private void OnModelLoadedCallback(string topic)
 	{
 		Console.WriteLine($"Loaded {topic}");
-
-		_ = LoadNextModel();
 	}
 	
 	private void OnCollideCallback(string topic)
 	{
 		Console.WriteLine($"Collided with {topic}");
-	}
-	
-	private async Task LoadNextModel()
-	{
-		await Task.Run(() =>
-		{
-			(string topic,ComponentBase component) toDequeue;
-			if(entityLoadQueue.TryDequeue(out toDequeue))
-			{
-				if (entities.ContainsKey(toDequeue.topic))
-				{
-					Console.WriteLine($"Updating {toDequeue.topic}");
-					entities[toDequeue.topic] = toDequeue.component;
-				}
-				else
-				{
-					Console.WriteLine($"Adding {toDequeue.topic}");
-					entities.Add(toDequeue.topic,toDequeue.component);
-					StateHasChanged();
-				}
-			}
-		});
 	}
 }
