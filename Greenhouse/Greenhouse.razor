@@ -2,8 +2,6 @@
 @using Common.Components
 @using Common.Components.Base
 
-@page "/"
-
 <!-- Static objects go here -->
 
 <APlane Topic="pink"	Color="pink"	OnCollideCallback="@clc"	Opacity=0.1	P="@(new Position(008,004,006))"	R="@(new Rotation(0,0,0))"		WH="@(new WidthHeight(5,5))"	/>
@@ -54,7 +52,7 @@ AFRAME.registerComponent('trigger-handler', {
 	AModel lily00;
 	AModel lily01;
 
-	public Home()
+	public Greenhouse()
 	{
 		entities = new();
 		clc = EventCallback.Factory.Create<string>(this, OnCollideCallback);
