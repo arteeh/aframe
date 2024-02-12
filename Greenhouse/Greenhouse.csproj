@@ -4,9 +4,14 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-	<RunAOTCompilation>false</RunAOTCompilation>
-    <WasmStripILAfterAOT>false</WasmStripILAfterAOT>
-	<PublishTrimmed>false</PublishTrimmed>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    
+	<RunAOTCompilation>false</RunAOTCompilation>      <!-- compiled instead of interpreted -->
+    <PublishTrimmed>false</PublishTrimmed>            <!-- Reduce size of website. May cause issues -->
+    <WasmStripILAfterAOT>false</WasmStripILAfterAOT>  <!-- Reduce size of _framework folder after AOT -->
+    <WasmEmitSymbolMap>true</WasmEmitSymbolMap>       <!-- Show more debug info in browser devtools -->
+    <WasmNativeStrip>false</WasmNativeStrip>          <!-- Strip the native executable. False when debugging -->
+    
   </PropertyGroup>
 
   <ItemGroup>
