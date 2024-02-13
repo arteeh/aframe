@@ -1,11 +1,13 @@
-﻿@using Common
+﻿@using Microsoft.JSInterop
+@using Common
 @using Common.Components
 @using Common.Components.Base
 
+@inject IJSRuntime JS
+
 <!-- Static objects go here -->
 
-<APlane Topic="pink"	Color="pink"	OnCollideCallback="@clc"	Opacity=0.1	P="@(new Position(008,004,006))"	R="@(new Rotation(0,0,0))"		WH="@(new WidthHeight(5,5))"	/>
-<APlane	Topic="red"		Color="red"		Opacity=0.1	P="@(new Position(001,-03,000))"	R="@(new Rotation(-90,0,0))"	WH="@(new WidthHeight(30,30))"	/> <!-- invfloor -->
+<APlane Topic="respawnfloor"	Color="pink"	Opacity=0.0	P="@(new Position(001,-03,000))"	R="@(new Rotation(-90,000,000))"	WH="@(new WidthHeight(50,50))"	/>
 @* <APlane	Color="green"		Opacity=0.1 P="new Position(011,002,000)"	R="new Rotation(0,90,0)"	WH="new WidthHeight(24,6)"	/> <!-- invwallwest --> *@
 @* <APlane	Color="blue"		Opacity=0.1 P="new Position(001,002,012)"	R="new Rotation(0,0,0)"		WH="new WidthHeight(20,6)"	/> <!-- invwallnorth --> *@
 @* <APlane	Color="yellow"		Opacity=0.1 P="new Position(001,002,-12)"	R="new Rotation(0,0,0)"		WH="new WidthHeight(20,6)"	/> <!-- invwallsouth --> *@
@@ -26,15 +28,11 @@
 }
 
 <script>
-AFRAME.registerComponent('trigger-handler', {
+AFRAME.registerComponent('trigger-enter-handler', {
 	init: function() {
 		this.el.addEventListener('trigger-enter', ()=>{
-			if(this.el.object3D.userData.isLocalPlayer) {
-				// This is the current player triggering
-				console.log("trigger current player")
-			}else if(this.el.object3D.userData.other){
-				// This is another object, this.el.object3D.userData.other is the other HTML element.
-				console.log("trigger other thing")
+			if (this.el.object3D.userData.isLocalPlayer){
+				DotNet.invokeMethodAsync('Greenhouse', 'OnTriggerEnter', this.el.id);
 			}
 		});
 	}
@@ -43,9 +41,9 @@ AFRAME.registerComponent('trigger-handler', {
 
 @code
 {
+	private static Greenhouse _app;
+	
 	private Dictionary<string, ComponentBase> entities;
-
-	EventCallback<string> clc;
 
 	AModel cphysical;
 	AModel cntnrfltng;
@@ -54,8 +52,8 @@ AFRAME.registerComponent('trigger-handler', {
 
 	public Greenhouse()
 	{
-		entities = new();
-		clc = EventCallback.Factory.Create<string>(this, OnCollideCallback);
+		_app = this;
+		entities	= new();
 		cphysical	= new("cphysical", "#cphysical", collisionType: CollisionType.ConvexRecursive);
 		cntnrfltng	= new("cntnrfltng", "#cntnrfltng", collisionType: CollisionType.ConvexRecursive);
 		lily00		= new("lily00", "#lily00", collisionType: CollisionType.ConvexRecursive);
@@ -94,9 +92,27 @@ AFRAME.registerComponent('trigger-handler', {
 	{
 		Console.WriteLine($"Loaded {topic}");
 	}
+
+	// JS to C#
 	
-	private void OnCollideCallback(string topic)
+	[JSInvokable]
+	public static async Task OnTriggerEnter(string topic)
 	{
 		Console.WriteLine($"Collided with {topic}");
+		if (topic == "respawnfloor")
+		{
+			await _app.MovePlayer(9, 0.25, -4); // back to spawn
+		}
+	}
+	
+	// C# to JS
+
+	public async Task MovePlayer(double x, double y, double z)
+	{
+		Dictionary<string, double> xyz = new();
+		xyz.Add("x",x);
+		xyz.Add("y",y);
+		xyz.Add("z",z);
+		await JS.InvokeVoidAsync("movePlayer", xyz);
 	}
 }
