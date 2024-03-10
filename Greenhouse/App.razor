@@ -41,7 +41,7 @@ AFRAME.registerComponent('trigger-enter-handler', {
 
 @code
 {
-	private static Greenhouse _app;
+	private static App _app;
 	
 	private Dictionary<string, ComponentBase> entities;
 
@@ -50,7 +50,7 @@ AFRAME.registerComponent('trigger-enter-handler', {
 	AModel lily00;
 	AModel lily01;
 
-	public Greenhouse()
+	public App()
 	{
 		_app = this;
 		entities	= new();

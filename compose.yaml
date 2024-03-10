@@ -1,38 +1,42 @@
 services:
-
-  hub:
-    image: arteeh/banter-hub
-    container_name: hub
-    restart: unless-stopped
-    networks:
-      - banter-network
-    build:
-      context: .
-      dockerfile: ./Hub/Dockerfile
-
-  greenhouse:
-    image: arteeh/banter-greenhouse
-    container_name: greenhouse
-    restart: unless-stopped
-    networks:
-      - banter-network
-    build:
-      context: .
-      dockerfile: ./Greenhouse/Dockerfile
-
-  npm:
-    image: jc21/nginx-proxy-manager
-    container_name: npm
-    restart: unless-stopped
-    volumes:
-      - npm-data:/data
-      - npm-letsencrypt:/etc/letsencrypt
-    networks:
-      - banter-network
-    ports:
-      - 7080:80
-      - 7081:81
-      - 7443:443
+    
+    hub:
+        image: arteeh/banter-hub
+        container_name: hub
+        restart: unless-stopped
+        networks:
+            - banter-network
+        ports:
+            - 7770:80
+        build:
+            context: .
+            dockerfile: ./Hub/Dockerfile
+    
+    greenhouse:
+        image: arteeh/banter-greenhouse
+        container_name: greenhouse
+        restart: unless-stopped
+        networks:
+            - banter-network
+        ports:
+            - 7771:80
+        build:
+            context: .
+            dockerfile: ./Greenhouse/Dockerfile
+    
+    npm:
+        image: jc21/nginx-proxy-manager
+        container_name: npm
+        restart: unless-stopped
+        volumes:
+            - npm-data:/data
+            - npm-letsencrypt:/etc/letsencrypt
+        networks:
+            - banter-network
+        ports:
+            - 80:80
+            - 81:81
+            - 443:443
 #
 #  directus:
 #    image: directus/directus
@@ -84,12 +88,12 @@ services:
 #      POSTGRES_PASSWORD: "PvPiQcwC5ynnoaMwijJv"
 
 volumes:
-
-  npm-data:
-  npm-letsencrypt:
+    
+    npm-data:
+    npm-letsencrypt:
 #  database:
 #  uploads:
 
 networks:
-
-  banter-network:
+    
+    banter-network:

@@ -1,26 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <InvariantGlobalization>true</InvariantGlobalization>
-    
-	<RunAOTCompilation>false</RunAOTCompilation>      <!-- compiled instead of interpreted -->
-    <PublishTrimmed>false</PublishTrimmed>            <!-- Reduce size of website. May cause issues -->
-    <WasmStripILAfterAOT>false</WasmStripILAfterAOT>  <!-- Reduce size of _framework folder after AOT -->
-    <WasmEmitSymbolMap>true</WasmEmitSymbolMap>       <!-- Show more debug info in browser devtools -->
-    <WasmNativeStrip>false</WasmNativeStrip>          <!-- Strip the native executable. False when debugging -->
-    
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<InvariantGlobalization>true</InvariantGlobalization>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.1" PrivateAssets="all" />
-  </ItemGroup>
+		<RunAOTCompilation>false</RunAOTCompilation>		<!-- compiled instead of interpreted -->
+		<PublishTrimmed>false</PublishTrimmed>				<!-- Reduce size of website. May cause issues -->
+		<WasmStripILAfterAOT>false</WasmStripILAfterAOT>	<!-- Reduce size of _framework folder after AOT -->
+		<WasmEmitSymbolMap>false</WasmEmitSymbolMap>		<!-- Show more debug info in browser devtools -->
+		<WasmNativeStrip>true</WasmNativeStrip>				<!-- Strip the native executable. False when debugging -->
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.2" PrivateAssets="all" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Common\Common.csproj"/>
+	</ItemGroup>
 
 </Project>
