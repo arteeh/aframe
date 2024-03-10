@@ -30,9 +30,9 @@ services:
     networks:
       - banter-network
     ports:
-      - 80:80
-      - 81:81
-      - 443:443
+      - 7080:80
+      - 7081:81
+      - 7443:443
 #
 #  directus:
 #    image: directus/directus
