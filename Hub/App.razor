@@ -1,64 +1,11 @@
-﻿@using System.Threading
-@using Common
+﻿@using Common
 @using Common.Components
+@using Common.Components.Base
 
-<a-sphere sq-collider position="0 1.25 -1" radius="1.25" color="#EF2D5E"></a-sphere>
-<a-cylinder sq-collider position="1 0.75 1" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
-<a-plane sq-collider position="0 0 0" rotation="-90 0 0" width="9" height="9" color="#7BC8A4"></a-plane>
-
- <!-- A big box for the floor with a collider on it -->
-<a-box sq-collider color="darkgreen" scale="30 0.1 30"></a-box>
-
-<!-- A 3d model of a christmas tree! -->
-<a-entity position="-7 0 -4" scale=".02 .02 .02"
-	gltf-model="https://cdn.glitch.global/537d3be1-3c9d-4443-b94c-e84d2ba3ced3/christmas_tree_polycraft.glb?v=1669127630594"></a-entity>
-<!-- Some ambiance! -->
-@* <a-sound position="10 1 0" autoplay="true" loop="true" volume="0.05"
-	src="https://cdn.glitch.global/537d3be1-3c9d-4443-b94c-e84d2ba3ced3/christmas.mp3?v=1669127746032"></a-sound> *@
-	
-<a-entity position="0 0 0">
-	<!-- A big box for the horizontal empty section -->
-	<a-box depth="0.1" width="8" position="0.5 1.5 -5" color="green"></a-box>
-	<!-- Several smaller sections for blanking in between each door -->
-	<a-box depth="0.1" width="1" position="-0.5 0.5 -5" color="green"></a-box>
-	<a-box depth="0.1" width="1" position="1.5 0.5 -5" color="green"></a-box>
-	<a-box depth="0.1" width="1" position="3.5 0.5 -5" color="green"></a-box>
-	<a-box depth="0.1" width="1" position="-2.5 0.5 -5" color="green"></a-box>
-	<!-- Door 1 honeypot! -->
-	<a-entity position="-2 0 -5">
-		<a-plane position="0.5 0.5 0"
-			src="https://cdn.glitch.global/537d3be1-3c9d-4443-b94c-e84d2ba3ced3/honeypot-256x256-30663.png"></a-plane>
-		<!-- animation uses startEvents to trigger it, this also sets autoplay to false -->
-		<a-entity
-			animation="property: rotation; from: 0 0 0; to: 0 -90 0; dur: 700; easing: easeInOutExpo; startEvents: startAnimation">
-			<a-box sq-collider sq-interactable handle-click depth="0.1" position="0.5 0.5 0" color="red">
-				<a-text value="1" position="0 0.1 0.11" align="center"></a-text>
-			</a-box>
-		</a-entity>
-	</a-entity>
-	<!-- Door 2 candy! -->
-	<a-entity position="0 0 -5">
-		<a-plane position="0.5 0.5 0"
-			src="https://cdn.glitch.global/537d3be1-3c9d-4443-b94c-e84d2ba3ced3/candy-256x256-30693.png"></a-plane>
-		<a-entity
-			animation="property: rotation; from: 0 0 0; to: 0 -90 0;  dur: 700; easing: easeInOutExpo;startEvents: startAnimation ">
-			<a-box sq-collider sq-interactable handle-click depth="0.1" position="0.5 0.5 0" color="red">
-				<a-text value="2" position="0 0.1 0.11" align="center"></a-text>
-			</a-box>
-		</a-entity>
-	</a-entity>
-	<!-- Door 3 chicken! -->
-	<a-entity position="2 0 -5">
-		<a-plane position="0.5 0.5 0"
-			src="https://cdn.glitch.global/537d3be1-3c9d-4443-b94c-e84d2ba3ced3/chicken-256x256-30650.png"></a-plane>
-		<a-entity
-			animation="property: rotation; from: 0 0 0; to: 0 -90 0;  dur: 700; easing: easeInOutExpo; startEvents: startAnimation">
-			<a-box sq-collider sq-interactable handle-click depth="0.1" position="0.5 0.5 0" color="red">
-				<a-text value="3" position="0 0.1 0.11" align="center"></a-text>
-			</a-box>
-		</a-entity>
-	</a-entity>
-</a-entity>
+<APlane Topic="floor" Color="#000000" Opacity="0.1"
+        P="@(new Position(0,0,0))"
+        R="@(new Rotation(-90,0,0))"
+        WH="@(new WidthHeight(10,10))" />
 
 @foreach (ComponentBase e in entities.Values)
 {
@@ -66,8 +13,7 @@
 }
 
 @code {
-
-	bool direction = true;
+	
 	private Dictionary<string, ComponentBase> entities = new();
 
 	protected override async Task OnParametersSetAsync()
@@ -88,33 +34,7 @@
 
 		if(firstRender)
 		{
-			entities.Add("entities/mirror1", new AMirror(-2,1,10,0,180,0,4,4,4));
-			entities.Add("entities/abox1", new ABox("#4CC3D9",0,0.5,-3,0,45,0,1,1,1));
-			StateHasChanged();
-
-			GameLoop();
-		}
-	}
-
-	private async Task GameLoop()
-	{
-		PeriodicTimer t = new(TimeSpan.FromMicroseconds(1000000 / 10));
-
-		while (await t.WaitForNextTickAsync())
-		{
-			ComponentBase? a;
-			if(entities.TryGetValue("entities/abox1", out a))
-			{
-				ABox ab = (ABox) a;
-
-				if (2 < ab.P.PosX) direction = false;
-				else if (ab.P.PosX < 0) direction = true;
-
-				if (direction) ab.P.PosX += 0.01;
-				else ab.P.PosX -= 0.01;
-
-				StateHasChanged();
-			}
+			
 		}
 	}
 }

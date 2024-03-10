@@ -6,8 +6,11 @@
 </head>
 <body>
 	<a-scene sq-hidedefaulttextures sq-spawnpoint="position: 0 0 10;">
+		<a-assets>
+			<img id="sky" src="Assets/textures/hdri-earth.png"></img>
+		</a-assets>
 		<a-entity id="app"></a-entity>
-		<a-sky color="#d1fffe"></a-sky>
+		<a-sky color="#sky"></a-sky>
 	</a-scene>
 	<script src="_framework/blazor.webassembly.js"></script>
 </body>
