@@ -1,1 +1,1 @@
-docker buildx build --platform="linux/arm64" -t arteeh/banter-hub:latest --push .
+docker buildx bake --push --set *.platform=linux/amd64,linux/arm64/v8

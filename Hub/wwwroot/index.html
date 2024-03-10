@@ -5,7 +5,10 @@
 	<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
 </head>
 <body>
-	<a-scene sq-spawnpoint="position: 0 0 10;" id="app"></a-scene>
+	<a-scene sq-hidedefaulttextures sq-spawnpoint="position: 0 0 10;" id="app">
+		<a-entity id="hub"></a-entity>
+		<a-sky color="#d1fffe"></a-sky>
+	</a-scene>
 	<script src="_framework/blazor.webassembly.js"></script>
 </body>
 </html>

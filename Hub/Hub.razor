@@ -1,9 +1,11 @@
-﻿@page "/"
+﻿@using Microsoft.JSInterop
+@using Common
+@using Common.Components
+@using Common.Components.Base
 
 <a-sphere sq-collider position="0 1.25 -1" radius="1.25" color="#EF2D5E"></a-sphere>
 <a-cylinder sq-collider position="1 0.75 1" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
 <a-plane sq-collider position="0 0 0" rotation="-90 0 0" width="9" height="9" color="#7BC8A4"></a-plane>
-<a-sky color="#d1fffe"></a-sky>
 
  <!-- A big box for the floor with a collider on it -->
 <a-box sq-collider color="darkgreen" scale="30 0.1 30"></a-box>
@@ -68,7 +70,6 @@
 
 	bool direction = true;
 	private Dictionary<string, ComponentBase> entities = new();
-	private EventCallback<string> ec;
 
 	protected override async Task OnParametersSetAsync()
 	{

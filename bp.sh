@@ -1,2 +1,2 @@
 #/bin/sh
-docker buildx build --platform="linux/arm64" -t arteeh/banter-hub:latest --push .
+docker buildx build --platform="linux/arm64" -t arteeh/banter-greenhouse:latest --push .
