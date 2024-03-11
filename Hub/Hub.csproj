@@ -22,4 +22,9 @@
 		<ProjectReference Include="..\Common\Common.csproj"/>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="pub\web.config" />
+	  <_ContentIncludedByDefault Remove="pub\wwwroot\_framework\blazor.boot.json" />
+	</ItemGroup>
+
 </Project>

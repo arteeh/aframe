@@ -1,7 +1,7 @@
 services:
     
     hub:
-        image: gcr.io/banter-project/banter-hub:latest
+        image: arteeh/banter-hub
         container_name: hub
         restart: unless-stopped
         networks:
@@ -13,7 +13,7 @@ services:
             dockerfile: ./Hub/Dockerfile
     
     greenhouse:
-        image: gcr.io/banter-project/banter-greenhouse:latest
+        image: arteeh/banter-greenhouse
         container_name: greenhouse
         restart: unless-stopped
         networks:

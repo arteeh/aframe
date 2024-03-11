@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM --platform=$BUILDPLATFORM bitnami/dotnet-sdk:8 AS build
 ARG TARGETARCH
 #RUN apt update -y && apt install python3 -y
 #RUN dotnet workload install wasm-tools
