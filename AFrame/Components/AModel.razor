@@ -2,11 +2,11 @@
 
 @code
 {
-	[Parameter] public string Topic { get; set; }
-	[Parameter] public string GLTFHref { get; set; }
-	[Parameter] public Base.Position P { get; set; }
-	[Parameter] public Base.Rotation R { get; set; }
-	[Parameter] public Base.Scale S { get; set; }
+	[Parameter] public string Id { get; set; }
+	[Parameter] public string Model { get; set; }
+	[Parameter] public Position P { get; set; }
+	[Parameter] public Rotation R { get; set; }
+	[Parameter] public Scale S { get; set; }
 	[Parameter] public CollisionType CollisionType { get; set; }
 	[Parameter] public EventCallback<string> OnCollideCallback { get; set; }
 
@@ -14,21 +14,21 @@
 
 	public AModel()
 	{
-		Topic = ""; GLTFHref = "";
+		Id = ""; Model = "";
 		P = new(); R = new(); S = new(); attributes = new();
 		CollisionType = CollisionType.NonconvexRecursive;
 		OnCollideCallback = new EventCallback<string>();
 	}
 
-	public AModel(string topic, string gltfHref,
+	public AModel(string id, string model,
 		CollisionType collisionType = CollisionType.NonconvexRecursive,
 		EventCallback<string> onCollideCallback = new EventCallback<string>(),
 		double posX = 0, double posY = 0, double posZ = 0,
 		double rotX = 0, double rotY = 0, double rotZ = 0,
 		double sclX = 1, double sclY = 1, double sclZ = 1)
 	{
-		Topic = topic;
-		GLTFHref = gltfHref;
+		Id = id;
+		Model = model;
 		P = new(posX,posY,posZ); R = new(rotX,rotY,rotZ); S = new(sclX,sclY,sclZ);
 		CollisionType = collisionType;
 		OnCollideCallback = onCollideCallback;
@@ -38,8 +38,8 @@
 	protected override Task OnParametersSetAsync()
 	{
 		attributes.Clear();
-		attributes.Add("id", Topic);
-		attributes.Add("gltf-model", GLTFHref);
+		attributes.Add("id", Id);
+		attributes.Add("gltf-model", Model);
 		attributes.Add("position", P.ToString());
 		attributes.Add("rotation", R.ToString());
 		attributes.Add("scale", S.ToString());
@@ -71,6 +71,6 @@
 
 	private async Task OnCollide()
 	{
-		await OnCollideCallback.InvokeAsync(Topic);
+		await OnCollideCallback.InvokeAsync(Id);
 	}
 }

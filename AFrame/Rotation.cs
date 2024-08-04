@@ -1,4 +1,8 @@
-﻿@code
+﻿using Microsoft.AspNetCore.Components;
+
+namespace AFrame;
+
+public class Rotation
 {
 	[Parameter]
 	public double RotX { get; set; } = 0;

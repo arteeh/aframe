@@ -1,11 +1,10 @@
-﻿@using Common
-@using Common.Components
-@using Common.Components.Base
+﻿@using AFrame
+@using AFrame.Components
 
-<APlane Topic="floor" Color="#000000" Opacity="0.1"
+<APlane Id="floor" Color="#000000" Opacity="0.1"
         P="@(new Position(0,0,0))"
         R="@(new Rotation(-90,0,0))"
-        WH="@(new WidthHeight(10,10))" />
+        S="@(new Size(10,10))" />
 
 @foreach (ComponentBase e in entities.Values)
 {

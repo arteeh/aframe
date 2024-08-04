@@ -1,4 +1,8 @@
-﻿@code
+﻿using Microsoft.AspNetCore.Components;
+
+namespace AFrame;
+
+public class Scale
 {
 	[Parameter]
 	public double SclX { get; set; } = 1;

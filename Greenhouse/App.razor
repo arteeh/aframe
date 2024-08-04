@@ -1,26 +1,25 @@
 ﻿@using Microsoft.JSInterop
-@using Common
-@using Common.Components
-@using Common.Components.Base
+@using AFrame
+@using AFrame.Components
 
 @inject IJSRuntime JS
 
 <!-- Static objects go here -->
 
-<APlane Topic="respawnfloor"	Color="pink"	Opacity=0.0	P="@(new Position(001,-03,000))"	R="@(new Rotation(-90,000,000))"	WH="@(new WidthHeight(50,50))"	/>
-@* <APlane	Color="green"		Opacity=0.1 P="new Position(011,002,000)"	R="new Rotation(0,90,0)"	WH="new WidthHeight(24,6)"	/> <!-- invwallwest --> *@
-@* <APlane	Color="blue"		Opacity=0.1 P="new Position(001,002,012)"	R="new Rotation(0,0,0)"		WH="new WidthHeight(20,6)"	/> <!-- invwallnorth --> *@
-@* <APlane	Color="yellow"		Opacity=0.1 P="new Position(001,002,-12)"	R="new Rotation(0,0,0)"		WH="new WidthHeight(20,6)"	/> <!-- invwallsouth --> *@
-@* <APlane	Color="pink"		Opacity=0.1 P="new Position(-09,002,000)"	R="new Rotation(0,90,0)"	WH="new WidthHeight(24,6)"	/> <!-- invwalleast --> *@
-<AModel Topic="earth"			GLTFHref="#earth"			CollisionType="CollisionType.ConvexRecursive"></AModel>
-<AModel Topic="ccollideonly"	GLTFHref="#ccollideonly"	CollisionType="CollisionType.NonconvexRecursive"></AModel>
-<AModel Topic="cpebbles"		GLTFHref="#cpebbles"		CollisionType="CollisionType.NonconvexRecursive"></AModel>
-<AModel	Topic="cleaves"			GLTFHref="#cleaves"			CollisionType="CollisionType.None"></AModel>
-<AModel	Topic="door"			GLTFHref="#door"			CollisionType="CollisionType.None"></AModel>
-<AModel	Topic="bench"			GLTFHref="#bench"			CollisionType="CollisionType.NonconvexRecursive"></AModel>
-<AModel	Topic="chair"			GLTFHref="#chair"			CollisionType="CollisionType.ConvexRecursive"></AModel>
-<AModel	Topic="sign"			GLTFHref="#sign"			CollisionType="CollisionType.ConvexRecursive"></AModel>
-<AImage ImagePath="#signimage"	P="@(new Position(9.09,1.1,6.21))"	R="@(new Rotation(-10,219,5))"	WH="@(new WidthHeight(1.2,0.5))"></AImage>
+<APlane Id="respawnfloor"	Color="pink"	Opacity=0.0	P="@(new Position(001,-03,000))"	R="@(new Rotation(-90,000,000))"	S="@(new Size(50,50))"	/>
+@* <APlane	Color="green"		Opacity=0.1 P="new Position(011,002,000)"	R="new Rotation(0,90,0)"	S="new WidthHeight(24,6)"	/> <!-- invwallwest --> *@
+@* <APlane	Color="blue"		Opacity=0.1 P="new Position(001,002,012)"	R="new Rotation(0,0,0)"		S="new WidthHeight(20,6)"	/> <!-- invwallnorth --> *@
+@* <APlane	Color="yellow"		Opacity=0.1 P="new Position(001,002,-12)"	R="new Rotation(0,0,0)"		S="new WidthHeight(20,6)"	/> <!-- invwallsouth --> *@
+@* <APlane	Color="pink"		Opacity=0.1 P="new Position(-09,002,000)"	R="new Rotation(0,90,0)"	S="new WidthHeight(24,6)"	/> <!-- invwalleast --> *@
+<AModel Id="earth"			Model="#earth"			CollisionType="CollisionType.ConvexRecursive"></AModel>
+<AModel Id="ccollideonly"	Model="#ccollideonly"	CollisionType="CollisionType.NonconvexRecursive"></AModel>
+<AModel Id="cpebbles"		Model="#cpebbles"		CollisionType="CollisionType.NonconvexRecursive"></AModel>
+<AModel	Id="cleaves"			Model="#cleaves"			CollisionType="CollisionType.None"></AModel>
+<AModel	Id="door"			Model="#door"			CollisionType="CollisionType.None"></AModel>
+<AModel	Id="bench"			Model="#bench"			CollisionType="CollisionType.NonconvexRecursive"></AModel>
+<AModel	Id="chair"			Model="#chair"			CollisionType="CollisionType.ConvexRecursive"></AModel>
+<AModel	Id="sign"			Model="#sign"			CollisionType="CollisionType.ConvexRecursive"></AModel>
+<AImage Src="#signimage"	P="@(new Position(9.09,1.1,6.21))"	R="@(new Rotation(-10,219,5))"	S="@(new Size(1.2,0.5))"></AImage>
 
 @foreach (ComponentBase e in entities.Values)
 {

@@ -1,0 +1,35 @@
+﻿<a-plane id="@Id" @attributes="@attributes" sq-collider sq-triggercollider trigger-enter-handler color="@Color" position="@P" rotation="@R" width="@S.Width" height="@S.Height" material="opacity: @Opacity; side: double;" />
+
+@code
+{
+	[Parameter] public string Id { get; set; } = "UNSET";
+	[Parameter] public string? Color { get; set; } = "#FFFFFF";
+	[Parameter] public double Opacity { get; set; } = 1.0;
+	[Parameter] public Position P { get; set; } = new();
+	[Parameter] public Rotation R { get; set; } = new();
+	[Parameter] public Size S { get; set; } = new();
+
+	private Dictionary<string, object> attributes = new();
+
+	public APlane() { }
+
+	public APlane(string id = "", string? color = null, double opacity = 1.0,
+		double posX = 0, double posY = 0, double posZ = 0,
+		double rotX = 0, double rotY = 0, double rotZ = 0,
+		double width = 1, double height = 1)
+	{
+		Id = id;
+		Color = color;
+		Opacity = opacity;
+		P = new(posX,posY,posZ);
+		R = new(rotX,rotY,rotZ);
+		S = new(width,height);
+	}
+
+	protected override Task OnParametersSetAsync()
+	{
+		attributes.Clear();
+		
+		return Task.CompletedTask;
+	}
+}

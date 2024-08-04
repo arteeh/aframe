@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AFrame", "AFrame\AFrame.csproj", "{2002D4A4-0F84-4CB5-9CD6-D39AA01D53AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Greenhouse", "Greenhouse\Greenhouse.csproj", "{246B4E62-291F-4632-8F3B-22061BFAAB55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub", "Hub\Hub.csproj", "{B1A09FAD-8910-4407-965B-5084F3C3AADD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2002D4A4-0F84-4CB5-9CD6-D39AA01D53AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2002D4A4-0F84-4CB5-9CD6-D39AA01D53AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2002D4A4-0F84-4CB5-9CD6-D39AA01D53AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2002D4A4-0F84-4CB5-9CD6-D39AA01D53AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{246B4E62-291F-4632-8F3B-22061BFAAB55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{246B4E62-291F-4632-8F3B-22061BFAAB55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{246B4E62-291F-4632-8F3B-22061BFAAB55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{246B4E62-291F-4632-8F3B-22061BFAAB55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1A09FAD-8910-4407-965B-5084F3C3AADD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1A09FAD-8910-4407-965B-5084F3C3AADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1A09FAD-8910-4407-965B-5084F3C3AADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1A09FAD-8910-4407-965B-5084F3C3AADD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

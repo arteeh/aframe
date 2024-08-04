@@ -1,4 +1,8 @@
-﻿@code
+﻿using Microsoft.AspNetCore.Components;
+
+namespace AFrame;
+
+public class Position
 {
 	[Parameter]
 	public double PosX { get; set; } = 0;

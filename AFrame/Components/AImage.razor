@@ -1,0 +1,22 @@
+﻿<a-image src="@Src" position="@P" rotation="@R" width="@S.Width" height="@S.Height" />
+
+@code {
+
+	[Parameter] public string Src { get; set; } = "";
+	[Parameter] public Size S { get; set; }
+	[Parameter] public Position P { get; set; }
+	[Parameter] public Rotation R { get; set; }
+
+	public AImage() { P = new(); R = new(); S = new(); }
+
+	public AImage(string src,
+		double posX = 0, double posY = 0, double posZ = 0,
+		double rotX = 0, double rotY = 0, double rotZ = 0,
+		double width = 1, double height = 1)
+	{
+		Src = src;
+		P = new(posX,posY,posZ);
+		R = new(rotX,rotY,rotZ);
+		S = new(width,height);
+	}
+}
