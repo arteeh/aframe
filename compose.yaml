@@ -1,99 +1,59 @@
 services:
     
-    hub:
-        image: arteeh/banter-hub
-        container_name: hub
-        restart: unless-stopped
-        networks:
-            - banter-network
-        ports:
-            - 7770:80
-        build:
-            context: .
-            dockerfile: ./Hub/Dockerfile
+  hub:
+    image: arteeh/hub
+    container_name: hub
+    restart: unless-stopped
+    networks:
+      - network
+    ports:
+      - 7770:80
+    build:
+      context: .
+      dockerfile: ./Hub/Dockerfile
+
+  greenhouse:
+    image: arteeh/greenhouse
+    container_name: greenhouse
+    restart: unless-stopped
+    networks:
+      - network
+    ports:
+      - 7771:80
+    build:
+      context: .
+      dockerfile: ./Greenhouse/Dockerfile
     
-    greenhouse:
-        image: arteeh/banter-greenhouse
-        container_name: greenhouse
-        restart: unless-stopped
-        networks:
-            - banter-network
-        ports:
-            - 7771:80
-        build:
-            context: .
-            dockerfile: ./Greenhouse/Dockerfile
+  greenhousejs:
+    image: nginx
+    container_name: greenhousejs
+    restart: unless-stopped
+    networks:
+      - network
+    ports:
+      - 7772:80
+    volumes:
+      - ./GreenhouseJS:/usr/share/nginx/html:ro
     
-    npm:
-        image: jc21/nginx-proxy-manager
-        container_name: npm
-        restart: unless-stopped
-        volumes:
-            - npm-data:/data
-            - npm-letsencrypt:/etc/letsencrypt
-        networks:
-            - banter-network
-        ports:
-            - 80:80
-            - 81:81
-            - 443:443
-#
-#  directus:
-#    image: directus/directus
-#    container_name: directus
-#    restart: unless-stopped
-#    networks:
-#      - banter-network
-#    ports:
-#      - 8055:8055
-#    volumes:
-#      - uploads:/directus/uploads
-#    depends_on:
-#      - redis
-#      - postgres
-#    environment:
-#      KEY: "RWdkoQ4JBgL6hbcbjiNY"
-#      SECRET: "K9fjzcqSxeGkRw2hM7zq"
-#      ADMIN_EMAIL: "me@arteeh.com"
-#      ADMIN_PASSWORD: "iJ8YrfuYyUvr2znffvKZ"
-#      CACHE_ENABLED: "true"
-#      CACHE_STORE: "redis"
-#      REDIS: "redis://redis:6379"
-#      DB_CLIENT: "pg"
-#      DB_HOST: "postgres"
-#      DB_PORT: "5432"
-#      DB_DATABASE: "directus"
-#      DB_USER: "directus"
-#      DB_PASSWORD: "PvPiQcwC5ynnoaMwijJv"
-#      PUBLIC_URL: "https://api.arteeh.com"
-#
-#  redis:
-#    image: redis:alpine
-#    container_name: redis
-#    restart: unless-stopped
-#    networks:
-#      - banter-network
-#
-#  postgres:
-#    image: postgres:alpine
-#    container_name: postgres
-#    restart: unless-stopped
-#    networks:
-#      - banter-network
-#    volumes:
-#      - database:/var/lib/postgresql/data
-#    environment:
-#      POSTGRES_DB: "directus"
-#      POSTGRES_USER: "directus"
-#      POSTGRES_PASSWORD: "PvPiQcwC5ynnoaMwijJv"
+  npm:
+    image: jc21/nginx-proxy-manager
+    container_name: npm
+    restart: unless-stopped
+    volumes:
+      - npm-data:/data
+      - npm-letsencrypt:/etc/letsencrypt
+    networks:
+      - network
+    ports:
+      - 80:80
+      - 81:81
+      - 443:443
 
 volumes:
     
-    npm-data:
-    npm-letsencrypt:
-#  database:
-#  uploads:
+  npm-data:
+  npm-letsencrypt:
 
 networks:
     
-    banter-network:
+  network:
