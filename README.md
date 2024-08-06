@@ -19,5 +19,7 @@ https://github.com/networked-aframe/networked-aframe
 ### Proximity voice system
 
 ### Browser extension
-Browser extension that injects a-frame entities like the site explorer UI into every a-scene:\
+Browser extension that injects a-frame entities like the site explorer UI into every a-scene.
+
+Browser extension example:\
 https://github.com/mdn/webextensions-examples/tree/main/borderify
