@@ -1,0 +1,52 @@
+services:
+
+  database:
+    name: database
+    image: postgis/postgis
+    volumes:
+      - database:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: "directus"
+      POSTGRES_USER: "mFHQUH2tQ6ctuTP6DCf6"
+      POSTGRES_PASSWORD: "qN7GoERimfgY2EmYAur9"
+
+  cache:
+    name: cache
+    image: redis
+
+  directus:
+    name: api
+    image: directus/directus
+    ports:
+      - 8055:8055
+    environment:
+      SECRET: "ZN7a4dBUXBQsXAZZqYpH"
+      ADMIN_EMAIL: "me@arteeh.com"
+      ADMIN_PASSWORD: "SnqQyT4h6QbWf2C4gxEC"
+      PUBLIC_URL: "https://a-sites.arteeh.com"
+      DB_CLIENT: "pg"
+      DB_HOST: "database"
+      DB_PORT: "5432"
+      DB_DATABASE: "directus"
+      DB_USER: "mFHQUH2tQ6ctuTP6DCf6"
+      DB_PASSWORD: "qN7GoERimfgY2EmYAur9"
+      CACHE_ENABLED: "true"
+      CACHE_AUTO_PURGE: "true"
+      CACHE_STORE: "redis"
+      REDIS: "redis://cache:6379"
+    depends_on:
+      - cache
+      - database
+
+volumes:
+
+  database:
+
+networks:
+
+  directus_network:
+    name: directus_network
+
+  npm_network:
+    name: npm_network
+    external: true

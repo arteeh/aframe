@@ -1,13 +1,4 @@
 services:
-    
-  greenhouse:
-    image: nginx
-    container_name: greenhouse
-    restart: unless-stopped
-    networks:
-      - network
-    volumes:
-      - ./greenhouse:/usr/share/nginx/html:ro
 
   npm:
     image: jc21/nginx-proxy-manager
@@ -30,4 +21,5 @@ volumes:
 
 networks:
     
-  network:
+  npm_network:
+    name: npm_network
