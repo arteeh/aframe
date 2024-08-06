@@ -1,40 +1,14 @@
 services:
     
-  hub:
-    image: arteeh/hub
-    container_name: hub
-    restart: unless-stopped
-    networks:
-      - network
-    ports:
-      - 7770:80
-    build:
-      context: .
-      dockerfile: ./Hub/Dockerfile
-
   greenhouse:
-    image: arteeh/greenhouse
+    image: nginx
     container_name: greenhouse
     restart: unless-stopped
     networks:
       - network
-    ports:
-      - 7771:80
-    build:
-      context: .
-      dockerfile: ./Greenhouse/Dockerfile
-    
-  greenhousejs:
-    image: nginx
-    container_name: greenhousejs
-    restart: unless-stopped
-    networks:
-      - network
-    ports:
-      - 7772:80
     volumes:
-      - ./GreenhouseJS:/usr/share/nginx/html:ro
-    
+      - ./greenhouse:/usr/share/nginx/html:ro
+
   npm:
     image: jc21/nginx-proxy-manager
     container_name: npm
@@ -50,7 +24,7 @@ services:
       - 443:443
 
 volumes:
-    
+
   npm-data:
   npm-letsencrypt:
 

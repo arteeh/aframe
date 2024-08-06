@@ -1,11 +1,37 @@
 services:
     
+  hub:
+    image: arteeh/hub
+    container_name: hub
+    restart: unless-stopped
+    networks:
+      - network
+    ports:
+      - 7770:80
+    build:
+      context: .
+      dockerfile: ./Hub/Dockerfile
+
   greenhouse:
-    image: nginx
+    image: arteeh/greenhouse
     container_name: greenhouse
     restart: unless-stopped
     networks:
       - network
+    ports:
+      - 7771:80
+    build:
+      context: .
+      dockerfile: ./Greenhouse/Dockerfile
+    
+  greenhousejs:
+    image: nginx
+    container_name: greenhousejs
+    restart: unless-stopped
+    networks:
+      - network
+    ports:
+      - 7772:80
     volumes:
       - ./GreenhouseJS:/usr/share/nginx/html:ro
     
