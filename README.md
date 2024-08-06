@@ -8,6 +8,9 @@ Blazor or Javascript?
 ### Site explorer UI
 UI for browsing (compatible) sites. Directus API + Postgres database as a backend.
 
+Link traversal sample:\
+https://aframe.io/aframe/examples/showcase/link-traversal/index.html
+
 ### Avatar system
 existing avatar system, static presets:\
 https://github.com/networked-aframe/naf-valid-avatars
