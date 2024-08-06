@@ -1,8 +1,8 @@
 services:
 
   database:
-    name: database
     image: postgis/postgis
+    container_name: database
     volumes:
       - database:/var/lib/postgresql/data
     environment:
@@ -11,12 +11,12 @@ services:
       POSTGRES_PASSWORD: "qN7GoERimfgY2EmYAur9"
 
   cache:
-    name: cache
     image: redis
+    container_name: cache
 
   api:
-    name: api
     image: directus/directus
+    container_name: api
     networks:
       - npm_network
     ports:
