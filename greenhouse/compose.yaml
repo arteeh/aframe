@@ -9,11 +9,6 @@ services:
     volumes:
       - ./greenhouse:/usr/share/nginx/html:ro
 
-volumes:
-
-  npm-data:
-  npm-letsencrypt:
-
 networks:
     
   npm_network:

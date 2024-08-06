@@ -8,7 +8,7 @@ services:
       - npm-data:/data
       - npm-letsencrypt:/etc/letsencrypt
     networks:
-      - npm_network
+      - network
     ports:
       - 80:80
       - 81:81
@@ -16,10 +16,9 @@ services:
 
 volumes:
 
-  npm-data:
-  npm-letsencrypt:
+  data:
+  letsencrypt:
 
 networks:
     
-  npm_network:
-    name: npm_network
+  network:
