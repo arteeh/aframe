@@ -8,4 +8,5 @@ var scenes = document.body.querySelectorAll("a-scene");
 for(var i = 0; i < scenes.length; i++)
 {
 	scenes[i].insertAdjacentHTML("beforeend", temp);
+	scenes[i].insertAdjacentHTML("beforeend", siteBrowserHtml);
 }

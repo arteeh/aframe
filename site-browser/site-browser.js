@@ -1,5 +1,3 @@
-console.log("Site Browser version 1.0")
-
 class SiteBrowser extends HTMLElement
 {
 	constructor() {
@@ -9,6 +7,7 @@ class SiteBrowser extends HTMLElement
 	
 	connectedCallback()
 	{
+		console.log("Site Browser version 1.0")
 		console.log("Custom element added to page.");
 	}
 	
