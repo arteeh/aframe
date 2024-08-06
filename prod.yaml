@@ -1,0 +1,33 @@
+services:
+    
+  greenhouse:
+    image: nginx
+    container_name: greenhouse
+    restart: unless-stopped
+    networks:
+      - network
+    volumes:
+      - ./GreenhouseJS:/usr/share/nginx/html:ro
+    
+  npm:
+    image: jc21/nginx-proxy-manager
+    container_name: npm
+    restart: unless-stopped
+    volumes:
+      - npm-data:/data
+      - npm-letsencrypt:/etc/letsencrypt
+    networks:
+      - network
+    ports:
+      - 80:80
+      - 81:81
+      - 443:443
+
+volumes:
+    
+  npm-data:
+  npm-letsencrypt:
+
+networks:
+    
+  network:
