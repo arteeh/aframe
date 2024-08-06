@@ -17,6 +17,8 @@ services:
   api:
     name: api
     image: directus/directus
+    networks:
+      - npm_network
     ports:
       - 8055:8055
     environment:
@@ -44,8 +46,7 @@ volumes:
 
 networks:
 
-  directus_network:
-    name: directus_network
+  network:
 
   npm_network:
     name: npm_network

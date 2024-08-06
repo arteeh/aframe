@@ -5,8 +5,8 @@ services:
     container_name: npm
     restart: unless-stopped
     volumes:
-      - npm-data:/data
-      - npm-letsencrypt:/etc/letsencrypt
+      - data:/data
+      - letsencrypt:/etc/letsencrypt
     networks:
       - network
     ports:
