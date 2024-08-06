@@ -3,6 +3,8 @@ services:
   database:
     image: postgis/postgis
     container_name: database
+    networks:
+      - network
     volumes:
       - database:/var/lib/postgresql/data
     environment:
@@ -13,11 +15,14 @@ services:
   cache:
     image: redis
     container_name: cache
+    networks:
+      - network
 
   api:
     image: directus/directus
     container_name: api
     networks:
+      - network
       - npm_network
     ports:
       - 8055:8055
