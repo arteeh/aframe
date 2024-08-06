@@ -14,7 +14,7 @@ services:
     name: cache
     image: redis
 
-  directus:
+  api:
     name: api
     image: directus/directus
     ports:
