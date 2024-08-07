@@ -26,6 +26,8 @@ Browser extension that injects a-frame entities like the site explorer UI into e
 Browser extension example:\
 https://github.com/mdn/webextensions-examples/tree/main/borderify
 
+Maybe the extension should stay generic, with a little UI that lets you pick what you want to include in a-scenes.
+
 # Site ideas
 
 Ideas for a-frame sites to build
