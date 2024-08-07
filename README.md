@@ -44,6 +44,8 @@ A simple island with a greenhouse, ported from Banter
 
 Access a linux server in virtual space. Enter an domain name or IP address, login and a physical terminal will appear, alongside server and container statistics.
 
+The less keyboard typing, the better. How do we do that?
+
 ## Live Home
 
 Site where the environment is generated and automatically updated based on one player's camera and depth sensor input.
