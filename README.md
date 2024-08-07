@@ -1,9 +1,8 @@
-# A-Frame Online
+My playground repo for a-frame.
 
-Social components for a-frame sites. Banter, but decentralized.\
-Blazor or Javascript?
+# Component ideas
 
-## Ideas
+Social components for a-frame sites. Banter, but decentralized.
 
 ### Site explorer UI
 UI for browsing (compatible) sites. Directus API + Postgres database as a backend.
@@ -26,3 +25,19 @@ Browser extension that injects a-frame entities like the site explorer UI into e
 
 Browser extension example:\
 https://github.com/mdn/webextensions-examples/tree/main/borderify
+
+# Site ideas
+
+Ideas for a-frame sites to build
+
+## Hub
+
+My personal site. Portals to all my other sites and socials.
+
+## Greenhouse
+
+A simple island with a greenhouse, ported from Banter
+
+## Linux Terminal site
+
+Access a linux server in virtual space. Enter an domain name or IP address, login and a physical terminal will appear, alongside server and container statistics.
