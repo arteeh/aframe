@@ -10,6 +10,12 @@ UI for browsing (compatible) sites. Directus API + Postgres database as a backen
 Link traversal sample:\
 https://aframe.io/aframe/examples/showcase/link-traversal/index.html
 
+### Password manager frontend
+
+Can we trick password manager browser extensions into filling in fields?
+
+Or can I make an entirely new client for Bitwarden, that runs inside an a-scene?
+
 ### Avatar system
 existing avatar system, static presets:\
 https://github.com/networked-aframe/naf-valid-avatars
@@ -45,6 +51,8 @@ A simple island with a greenhouse, ported from Banter
 Access a linux server in virtual space. Enter an domain name or IP address, login and a physical terminal will appear, alongside server and container statistics.
 
 The less keyboard typing, the better. How do we do that?
+
+This is a case where an aframe site can be used to perform tasks that you'd normally do on a PC. What other IRL tasks would be cool to do in a-frame?
 
 ## Live Home
 
