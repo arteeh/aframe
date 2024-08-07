@@ -1,0 +1,16 @@
+services:
+
+  hub:
+    image: nginx
+    container_name: hub
+    restart: unless-stopped
+    networks:
+      - npm_network
+    volumes:
+      - ./src:/usr/share/nginx/html:ro
+
+networks:
+
+  npm_network:
+    name: npm_network
+    external: true
