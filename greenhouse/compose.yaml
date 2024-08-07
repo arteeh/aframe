@@ -7,7 +7,7 @@ services:
     networks:
       - npm_network
     volumes:
-      - ./greenhouse:/usr/share/nginx/html:ro
+      - ./src:/usr/share/nginx/html:ro
 
 networks:
     
