@@ -1,5 +1,5 @@
 {
-	"manifest_version": 3,
+	"manifest_version": 2,
 	"name": "A-Frame Injector",
 	"description": "Injects entities into every a-scene.",
 	"version": "1.0",

@@ -1,3 +1,5 @@
+console.log("Site Browser version 1.0");
+
 class SiteBrowser extends HTMLElement
 {
 	constructor() {
