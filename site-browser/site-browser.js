@@ -7,8 +7,7 @@ class SiteBrowser extends HTMLElement
 	
 	connectedCallback()
 	{
-		console.log("Site Browser version 1.0")
-		console.log("Custom element added to page.");
+		console.log("Site Browser version 1.0");
 	}
 	
 	disconnectedCallback()
