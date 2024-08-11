@@ -2,7 +2,16 @@ My playground repo for a-frame. Mostly ramblings below
 
 # Component ideas
 
-Social components for a-frame sites. Banter, but decentralized.
+Metaversey stuff for a-frame sites. Banter, but decentralized.
+
+### Browser extension
+Browser extension that injects a-frame entities like the site explorer UI into every a-scene.
+
+Browser extension example:\
+https://github.com/mdn/webextensions-examples/tree/main/borderify
+
+Maybe the extension should stay generic, with a little UI that lets you pick what you want to include in a-scenes.
+- Manifest V3 kind of kills this idea, since we can't run remotely-hosted code from an extension anymore. We can still include all the entities in our extension, or make an extension for every entity.
 
 ### Site explorer UI
 UI for browsing (compatible) sites. Directus API + Postgres database as a backend.
@@ -25,14 +34,6 @@ existing networking system for sites to use:\
 https://github.com/networked-aframe/networked-aframe
 
 ### Proximity voice system
-
-### Browser extension
-Browser extension that injects a-frame entities like the site explorer UI into every a-scene.
-
-Browser extension example:\
-https://github.com/mdn/webextensions-examples/tree/main/borderify
-
-Maybe the extension should stay generic, with a little UI that lets you pick what you want to include in a-scenes.
 
 # Site ideas
 

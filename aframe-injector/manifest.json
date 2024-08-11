@@ -1,5 +1,5 @@
 {
-	"manifest_version": 2,
+	"manifest_version": 3,
 	"name": "A-Frame Injector",
 	"description": "Injects entities into every a-scene.",
 	"version": "1.0",
@@ -10,7 +10,19 @@
 				"<all_urls>"
 			],
 			"js": [
+				"webcomponents-bundle.js",
+				"site-browser.js",
 				"aframe-injector.js"
+			]
+		}
+	],
+	"web_accessible_resources": [
+		{
+			"matches": [
+				"<all_urls>"
+			],
+			"resources": [
+				"site-browser.html"
 			]
 		}
 	]
