@@ -3,9 +3,9 @@ let siteBrowserHtml = document.createElement('siteBrowserHtml');
 var xhr = new XMLHttpRequest();
 xhr.open('GET', 'site-browser.html', true);
 xhr.onreadystatechange = function() {
-    if (this.readyState !== 4) return;
-    if (this.status !== 200) return;
-    siteBrowserHtml.innerHTML = this.responseText;
+	if (this.readyState !== 4) return;
+	if (this.status !== 200) return;
+	siteBrowserHtml.innerHTML = this.responseText;
 };
 xhr.send();
 

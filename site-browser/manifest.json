@@ -1,19 +1,21 @@
 {
 	"manifest_version": 3,
-	"name": "A-Frame Injector",
-	"description": "Injects entities into every a-scene.",
+	"name": "Site Browser",
+	"description": "Injects the site browser into every a-scene.",
 	"version": "1.0",
 	"homepage_url": "https://github.com/arteeh/aframe",
+	"permissions": ["activeTab"],
 	"content_scripts": [
 		{
+			"world": "MAIN",
 			"matches": [
 				"<all_urls>"
 			],
 			"js": [
-				"webcomponents-bundle.js",
-				"site-browser.js",
-				"aframe-injector.js"
-			]
+				"site-browser-injector.js",
+				"site-browser.js"
+			],
+			"run_at": "document_start"
 		}
 	],
 	"web_accessible_resources": [
