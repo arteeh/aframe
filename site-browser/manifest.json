@@ -4,7 +4,6 @@
 	"description": "Injects the site browser into every a-scene.",
 	"version": "1.0",
 	"homepage_url": "https://github.com/arteeh/aframe",
-	"permissions": ["activeTab"],
 	"content_scripts": [
 		{
 			"world": "MAIN",
@@ -12,20 +11,11 @@
 				"<all_urls>"
 			],
 			"js": [
-				"site-browser-injector.js",
-				"site-browser.js"
+				"site-browser.js",
+				"site-browser-injector.js"
+				
 			],
-			"run_at": "document_start"
-		}
-	],
-	"web_accessible_resources": [
-		{
-			"matches": [
-				"<all_urls>"
-			],
-			"resources": [
-				"site-browser.html"
-			]
+			"run_at": "document_idle"
 		}
 	]
 }
