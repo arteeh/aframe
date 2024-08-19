@@ -1,5 +1,4 @@
-document
-	.body
+document.body
 	.querySelector("a-scene")
 	.insertAdjacentHTML
 	(

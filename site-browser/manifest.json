@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
 	"name": "Site Browser",
-	"description": "Injects the site browser into every a-scene.",
+	"description": "Injects the site browser into every A-Frame scene.",
 	"version": "1.0",
 	"homepage_url": "https://github.com/arteeh/aframe",
 	"content_scripts": [
@@ -13,9 +13,7 @@
 			"js": [
 				"site-browser.js",
 				"site-browser-injector.js"
-				
-			],
-			"run_at": "document_idle"
+			]
 		}
 	]
 }
