@@ -1,0 +1,6 @@
+[submodule "hub"]
+	path = hub
+	url = https://github.com/arteeh/hub
+[submodule "greenhouse"]
+	path = greenhouse
+	url = https://github.com/arteeh/greenhouse
