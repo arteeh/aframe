@@ -5,7 +5,7 @@ My playground repo for a-frame. Mostly ramblings below
 Metaversey stuff for a-frame sites. Banter, but decentralized.
 
 ### Browser extension
-Browser extension that injects a-frame entities like the site explorer UI into every a-scene.
+Browser extension that injects 'essential' a-frame entities like the site explorer UI into every a-scene if they're not there already.
 
 Browser extension example:\
 https://github.com/mdn/webextensions-examples/tree/main/borderify
@@ -14,26 +14,29 @@ Maybe the extension should stay generic, with a little UI that lets you pick wha
 - Manifest V3 kind of kills this idea, since we can't run remotely-hosted code from an extension anymore. We can still include all the entities in our extension, or make an extension for every entity.
 
 ### Site explorer UI
-UI for browsing (compatible) sites. Directus API + Postgres database as a backend.
+UI for browsing (compatible) sites. Central API+database for aggregating and curating sites.
 
 Link traversal sample:\
 https://aframe.io/aframe/examples/showcase/link-traversal/index.html
 
-### Password manager frontend
+Ability to place a portal to another site in-world.
 
+### Avatar system
+https://vrm.dev/en/
+https://github.com/binzume/aframe-vrm
+
+### Multiplayer and (proximity) voice
+https://github.com/networked-aframe/networked-aframe
+
+### Password manager frontend
 Can we trick password manager browser extensions into filling in fields?
 
 Or can I make an entirely new client for Bitwarden, that runs inside an a-scene?
 
-### Avatar system
-existing avatar system, static presets:\
-https://github.com/networked-aframe/naf-valid-avatars
+### Identity
+Nostr account or crypto wallet as central identification system.
 
-### Multiplayer system
-existing networking system for sites to use:\
-https://github.com/networked-aframe/networked-aframe
-
-### Proximity voice system
+The account/wallet needs to contain a URL of an avatar .vrm file.
 
 # Site ideas
 
