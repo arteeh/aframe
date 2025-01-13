@@ -1,17 +1,10 @@
-My playground repo for a-frame. Mostly ramblings below
+My playground repo for a-frame. Mostly ramblings below.
 
 # Component ideas
 
-Metaversey stuff for a-frame sites. Banter, but decentralized.
+VRChat could be decentralized using a-frame, browser extensions and some commonly used components.
 
-### Browser extension
-Browser extension that injects 'essential' a-frame entities like the site explorer UI into every a-scene if they're not there already.
-
-Browser extension example:\
-https://github.com/mdn/webextensions-examples/tree/main/borderify
-
-Maybe the extension should stay generic, with a little UI that lets you pick what you want to include in a-scenes.
-- Manifest V3 kind of kills this idea, since we can't run remotely-hosted code from an extension anymore. We can still include all the entities in our extension, or make an extension for every entity.
+A website and a 'world' (in the way we use the word in Social VR apps) will one and the same. **Site** is a fitting word that accurately describes both meanings.
 
 ### Site explorer UI
 UI for browsing (compatible) sites. Central API+database for aggregating and curating sites.
@@ -28,13 +21,23 @@ https://github.com/binzume/aframe-vrm
 ### Multiplayer and (proximity) voice
 https://github.com/networked-aframe/networked-aframe
 
+### Browser extension
+Browser extension that injects 'essential' a-frame entities like the site explorer UI into every a-scene if they're not there already.
+
+Ideally, you never have to exit the browser's VR mode while you hop between sites. But here we might reach the limits of what browsers allow.
+
+Browser extension example:\
+https://github.com/mdn/webextensions-examples/tree/main/borderify
+
 ### Password manager frontend
 Can we trick password manager browser extensions into filling in fields?
 
 Or can I make an entirely new client for Bitwarden, that runs inside an a-scene?
 
 ### Identity
-Nostr account or crypto wallet as central identification system.
+I feel like by now there are ways to implement accounts/identification without central databases
+
+[Nostr key](https://en.wikipedia.org/wiki/Nostr) or crypto wallet or [World ID](https://world.org/world-id) as central identification system.
 
 The account/wallet needs to contain a URL of an avatar .vrm file.
 
